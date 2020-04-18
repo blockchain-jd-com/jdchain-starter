@@ -465,7 +465,6 @@ public class SDKTest extends SDK_Base_Demo {
 
         txTemp.dataAccounts().register(dataAccount.getIdentity());
         txTemp.dataAccount(dataAccount.getAddress()).setText("key1", "value1", -1);
-//        txTemp.dataAccount(dataAccount.getAddress()).setText("key2", "闫石反馈内容测试", -1);
 //        //add some data for retrieve;
         this.strDataAccount = dataAccount.getAddress().toBase58();
         System.out.println("current dataAccount=" + dataAccount.getAddress());
@@ -475,6 +474,11 @@ public class SDKTest extends SDK_Base_Demo {
         // TX 准备就绪
         commit(txTemp,signAdminKey,useCommitA);
 
+        //get the version
+        TypedKVEntry[] kvData = blockchainService.getDataEntries(ledgerHash,
+                dataAccount.getAddress().toBase58(), "key1");
+        System.out.println(String.format("key1 info:key=%s,value=%s,version=%d",
+                kvData[0].getKey(),kvData[0].getValue().toString(),kvData[0].getVersion()));
     }
 
     @Test
