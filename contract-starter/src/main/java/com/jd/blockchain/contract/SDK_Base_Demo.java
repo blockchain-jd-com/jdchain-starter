@@ -199,59 +199,23 @@ public abstract class SDK_Base_Demo {
         return this.registerUser(signer,null);
     }
 
-    public BlockchainKeypair createDataAccount() {
+    public BlockchainIdentity createDataAccount() {
         // 首先注册一个数据账户
         BlockchainKeypair newDataAccount = BlockchainKeyGenerator.getInstance().generate();
 
         TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
         txTpl.dataAccounts().register(newDataAccount.getIdentity());
         commitA(txTpl);
-        return newDataAccount;
+        return newDataAccount.getIdentity();
     }
 
-    public void contractHandle(String contractZipName, BlockchainKeypair signAdminKey, BlockchainKeypair contractDeployKey,
+    public BlockchainIdentity contractHandle(String contractZipName, BlockchainKeypair signAdminKey, BlockchainIdentity contractIdentity,
                                boolean isDeploy, boolean isExecute) {
-        if(contractZipName == null){
-            contractZipName = "contract-JDChain-Contract.jar";
-        }
-        // 发布jar包
-        // 定义交易模板
-        TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
-        Bytes contractAddress = null;
-        if(isDeploy){
-            // 将jar包转换为二进制数据
-            byte[] contractCode = readChainCodes(contractZipName);
-
-            // 生成一个合约账号
-            if(contractDeployKey == null){
-                contractDeployKey = BlockchainKeyGenerator.getInstance().generate();
-            }
-            contractAddress = contractDeployKey.getAddress();
-            System.out.println("contract's address=" + contractAddress);
-
-            // 生成发布合约操作
-            txTpl.contracts().deploy(contractDeployKey.getIdentity(), contractCode);
-
-            // 生成预发布交易；
-            commit(txTpl,signAdminKey,useCommitA);
-        }
-
-        if(isExecute){
-            // 注册一个数据账户
-            BlockchainKeypair dataAccount = createDataAccount();
-            // 获取数据账户地址x
-            String dataAddress = dataAccount.getAddress().toBase58();
-            // 打印数据账户地址
-            System.out.printf("DataAccountAddress = %s \r\n", dataAddress);
-
-            // 创建两个账号：
-            String account0 = "jd_zhangsan";
-            String content = "{\"dest\":\"KA006\",\"id\":\"cc-fin08-01\",\"items\":\"FIN001|3030\",\"source\":\"FIN001\"}";
-            System.out.println("return value = "+create1(dataAddress, account0, content, contractAddress));
-        }
+       return this.contractHandle(contractZipName,signAdminKey,contractIdentity,isDeploy,isExecute,
+                null,null,null);
     }
 
-    public String create1(String address, String account, String content, Bytes contractAddress) {
+    public String create1(Bytes contractAddress, String address, String account, String content) {
         System.out.println(String.format("params,String address=%s, String account=%s, String content=%s, Bytes contractAddress=%s",
                 address,account,content,contractAddress.toBase58()));
         TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
@@ -260,5 +224,53 @@ public abstract class SDK_Base_Demo {
         GenericValueHolder<String> result = decode(guanghu.putval(address, account, content, System.currentTimeMillis()));
         commit(txTpl,useCommitA);
         return result.get();
+    }
+
+    public BlockchainIdentity contractHandle(String contractZipName, BlockchainKeypair signAdminKey,
+                                            BlockchainIdentity contractDeployIdentity, boolean isDeploy,
+                               boolean isExecute, BlockchainIdentity dataAccount, String key, String value) {
+        if(contractZipName == null){
+            contractZipName = "contract-JDChain-Contract.jar";
+        }
+        // 发布jar包
+        // 定义交易模板
+        TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
+        Bytes contractAddress = null;
+        if(contractDeployIdentity != null){
+            contractAddress = contractDeployIdentity.getAddress();
+        }
+
+        if(isDeploy){
+            // 将jar包转换为二进制数据
+            byte[] contractCode = readChainCodes(contractZipName);
+
+            // 生成一个合约账号
+            if(contractDeployIdentity == null){
+                contractDeployIdentity = BlockchainKeyGenerator.getInstance().generate().getIdentity();
+            }
+            contractAddress = contractDeployIdentity.getAddress();
+            System.out.println("contract's address=" + contractAddress);
+
+            // 生成发布合约操作
+            txTpl.contracts().deploy(contractDeployIdentity, contractCode);
+
+            // 生成预发布交易；
+            commit(txTpl,signAdminKey,useCommitA);
+        }
+
+        if(isExecute){
+            // 注册一个数据账户
+            if(dataAccount == null){
+                dataAccount = createDataAccount();
+                key = "jd_zhangsan";
+                value = "{\"dest\":\"KA006\",\"id\":\"cc-fin08-01\",\"items\":\"FIN001|3030\",\"source\":\"FIN001\"}";
+            }
+            // 获取数据账户地址x
+            String dataAddress = dataAccount.getAddress().toBase58();
+            // 打印数据账户地址
+            System.out.printf("DataAccountAddress = %s \r\n", dataAddress);
+            System.out.println("return value = "+create1(contractAddress, dataAddress, key, value));
+        }
+        return contractDeployIdentity;
     }
 }

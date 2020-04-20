@@ -51,7 +51,7 @@ public class SDK_Contract_Guanghu_Demo extends SDK_Base_Demo {
 		System.out.printf("ContractAddress = %s \r\n", contractAddress.toBase58());
 
 		// 注册一个数据账户
-		BlockchainKeypair dataAccount = createDataAccount();
+		BlockchainIdentity dataAccount = createDataAccount();
 		// 获取数据账户地址
 		String dataAddress = dataAccount.getAddress().toBase58();
 		// 打印数据账户地址

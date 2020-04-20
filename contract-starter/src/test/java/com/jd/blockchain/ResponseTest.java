@@ -110,8 +110,8 @@ public class ResponseTest extends SDKTest {
     @Test
     public void test_deployContract_reply(){
         BlockchainKeypair contractDeployKey = BlockchainKeyGenerator.getInstance().generate();
-        this.contractHandle(null,null,contractDeployKey,true,true);
-        this.contractHandle(null,null,contractDeployKey,true,false);
+        this.contractHandle(null,null,contractDeployKey.getIdentity(),true,true);
+        this.contractHandle(null,null,contractDeployKey.getIdentity(),true,false);
     }
 
     //8.相同的合约地址部署合约，多线程;
@@ -136,23 +136,23 @@ public class ResponseTest extends SDKTest {
     @Test
     public void test_executeContract_reply(){
         BlockchainKeypair contractDeployKey = BlockchainKeyGenerator.getInstance().generate();
-        this.contractHandle(null,null,contractDeployKey,true,true);
-        this.contractHandle(null,null,contractDeployKey,false,true);
+        this.contractHandle(null,null,contractDeployKey.getIdentity(),true,true);
+        this.contractHandle(null,null,contractDeployKey.getIdentity(),false,true);
     }
 
     //10.合约执行非合约定义mainClass对应的接口;
     @Test
     public void test_executeContract_differ(){
         BlockchainKeypair contractDeployKey = BlockchainKeyGenerator.getInstance().generate();
-        this.contractHandle("contract-JDChain-Contract-Error.jar",null,contractDeployKey,true,true);
+        this.contractHandle("contract-JDChain-Contract-Error.jar",null,contractDeployKey.getIdentity(),true,true);
     }
 
     //11.相同的合约执行;合约执行非合约定义mainClass对应的接口;
     @Test
     public void test_executeContract_reply_differ(){
         BlockchainKeypair contractDeployKey = BlockchainKeyGenerator.getInstance().generate();
-        this.contractHandle(null,null,contractDeployKey,true,true);
-        this.contractHandle(null,null,contractDeployKey,false,true);
+        this.contractHandle(null,null,contractDeployKey.getIdentity(),true,true);
+        this.contractHandle(null,null,contractDeployKey.getIdentity(),false,true);
     }
 
     //12.数据账户未注册，直接set;
@@ -175,7 +175,7 @@ public class ResponseTest extends SDKTest {
     @Test
     public void test_executeContract_noAddress(){
         BlockchainKeypair contractDeployKey = BlockchainKeyGenerator.getInstance().generate();
-        this.contractHandle(null,null,contractDeployKey,false,true);
+        this.contractHandle(null,null,contractDeployKey.getIdentity(),false,true);
     }
 
     //14.数据账户set相同版本；
@@ -240,8 +240,8 @@ class ContractAccountThreadCall71 extends ResponseTest implements Callable {
     @Override
     public Object call() {
         BlockchainKeypair contractDeployKey = BlockchainKeyGenerator.getInstance().generate();
-        this.contractHandle(null,null,contractDeployKey,true,false);
-        this.contractHandle(null,null,contractDeployKey,true,false);
+        this.contractHandle(null,null,contractDeployKey.getIdentity(),true,false);
+        this.contractHandle(null,null,contractDeployKey.getIdentity(),true,false);
         return null;
     }
 }

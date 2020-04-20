@@ -68,13 +68,10 @@ public class GuanghuImpl implements EventProcessingAware,Guanghu {
         TypedKVEntry[] kvDataEntries=eventContext.getLedger().getDataEntries(ledgerHash,address,account);
         if(kvDataEntries!=null && kvDataEntries.length>0){
             long currVersion = kvDataEntries[0].getVersion();
-            if (currVersion > -1) {
-                throw new IllegalStateException(String.format("%s -> %s already have created !!!", address, account));
-            }
-            eventContext.getLedger().dataAccount(address).setText(account,content,-1L);
+            eventContext.getLedger().dataAccount(address).setText(account,content,currVersion);
         }
 
-        return String.format("DataAccountAddress[%s] -> Create(By Contract Operation) Account = %s and Money = %s  and time= %d Success!!! \r\n",
+        return String.format("DataAccountAddress[%s] -> Create(By Contract Operation) key = %s and value = %s  and time= %d Success!!! \r\n",
                 address, account, content, time);
     }
 

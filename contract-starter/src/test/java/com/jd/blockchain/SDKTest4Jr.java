@@ -1,6 +1,7 @@
 package com.jd.blockchain;
 
 import com.jd.blockchain.contract.SDK_Base_Demo;
+import com.jd.blockchain.ledger.BlockchainIdentity;
 import com.jd.blockchain.ledger.BlockchainKeyGenerator;
 import com.jd.blockchain.ledger.BlockchainKeypair;
 import com.jd.blockchain.ledger.TransactionTemplate;
@@ -64,7 +65,7 @@ public class SDKTest4Jr extends SDK_Base_Demo {
 
         if(isExecute){
             // 注册一个数据账户
-            BlockchainKeypair dataAccount = createDataAccount();
+            BlockchainIdentity dataAccount = createDataAccount();
             // 获取数据账户地址x
             String dataAddress = dataAccount.getAddress().toBase58();
             // 打印数据账户地址
@@ -74,11 +75,11 @@ public class SDKTest4Jr extends SDK_Base_Demo {
             String account0 = "jd_zhangsan";
             String content = "{\"dest\":\"KA006\",\"id\":\"cc-fin08-01\",\"items\":\"FIN001|3030\",\"source\":\"FIN001\"}";
 
-            System.out.println("old method, return value = "+create1(dataAddress, account0, content, contractAddress));
+            System.out.println("old method, return value = "+create1(contractAddress, dataAddress, account0, content));
         }
     }
 
-    public String create1(String address, String account, String content, Bytes contractAddress) {
+    public String create1(Bytes contractAddress, String address, String account, String content) {
         TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
         // 使用合约创建
         QANVUVVEIBR2Contract guanghu = txTpl.contract(contractAddress, QANVUVVEIBR2Contract.class);

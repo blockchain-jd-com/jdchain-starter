@@ -287,7 +287,7 @@ public class SDKTest extends SDK_Base_Demo {
         System.out.printf("ContractAddress = %s \r\n", contractAddress.toBase58());
 
         // 注册一个数据账户
-        BlockchainKeypair dataAccount = createDataAccount();
+        BlockchainIdentity dataAccount = createDataAccount();
         // 获取数据账户地址
         String dataAddress = dataAccount.getAddress().toBase58();
         // 打印数据账户地址
@@ -606,6 +606,38 @@ public class SDKTest extends SDK_Base_Demo {
         fileStoreSys.put(zhizhaoHash256,fakeZhizhaoBytes);
         Assert.assertNotEquals(hashInLedger,
                 Hex.toHexString(ShaUtils.hash_256(fileStoreSys.get(hashInLedger))));
+    }
+
+    @Test
+    public void executeContract4DataAcount() {
+        BlockchainIdentity contractIdentity =
+                this.contractHandle(null,null,null,true,false);
+        BlockchainKeypair dataAccount = this.insertData(null,null);
+
+        System.out.println("###dataAccountIdentity's pubKey="+KeyGenUtils.encodePubKey(dataAccount.getPubKey()));
+        System.out.println("###contractIdentity's pubKey="+KeyGenUtils.encodePubKey(contractIdentity.getPubKey()));
+        this.contractHandle(null,null,contractIdentity,
+                false,true, dataAccount.getIdentity(),"bizName","jd");
+    }
+
+    @Test
+    public void execOldContract(){
+        String dataAccountBase58PubKey = "3snPdw7i7PgfkrEhNK3Lq84HU6PxAoVyMZ6iMgL6pVNRWuoH2i6uiB";
+        String ContractBase58PubKey= "3snPdw7i7PfPRmhCCcdKNupXXrB3kACB2VsZJHk9wQJzdjpSKY7r9B";
+        PubKey DataAccountPubKey = KeyGenUtils.decodePubKey(dataAccountBase58PubKey);
+        PubKey ContractPubKey = KeyGenUtils.decodePubKey(ContractBase58PubKey);
+        BlockchainIdentity dataAccount = new BlockchainIdentityData(DataAccountPubKey);
+        BlockchainIdentity contractIdentity = new BlockchainIdentityData(ContractPubKey);
+        System.out.println("dataAccountAddress="+dataAccount.getAddress().toBase58());
+        System.out.println("contractAddress="+contractIdentity.getAddress().toBase58());
+
+        this.contractHandle(null,null,contractIdentity,
+                false,true, dataAccount,"bizName","jd1");
+        this.contractHandle(null,null,contractIdentity,
+                false,true, dataAccount,"bizName","jd2");
+        this.contractHandle(null,null,contractIdentity,
+                false,true, dataAccount,"bizName","jd3");
+
 
     }
 }
