@@ -13,10 +13,14 @@ import com.jd.blockchain.utils.codec.Base58Utils;
 import com.jd.blockchain.utils.io.ByteArray;
 import com.jd.blockchain.utils.security.ShaUtils;
 import com.jd.chain.contract.Guanghu;
+import org.bouncycastle.util.encoders.Hex;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.jd.blockchain.contract.SDKDemo_Constant.readChainCodes;
 import static com.jd.blockchain.transaction.ContractReturnValue.decode;
@@ -454,8 +458,8 @@ public class SDKTest extends SDK_Base_Demo {
         this.insertData(null,null);
     }
 
-    public void insertData(BlockchainKeypair dataAccount, BlockchainKeypair signAdminKey) {
-        if (!isTest) return;
+    public BlockchainKeypair insertData(BlockchainKeypair dataAccount, BlockchainKeypair signAdminKey) {
+        if (!isTest) return null;
         // 在本地定义注册账号的 TX；
         TransactionTemplate txTemp = blockchainService.newTransaction(ledgerHash);
         //采用KeyGenerator来生成BlockchainKeypair;
@@ -469,7 +473,6 @@ public class SDKTest extends SDK_Base_Demo {
         this.strDataAccount = dataAccount.getAddress().toBase58();
         System.out.println("current dataAccount=" + dataAccount.getAddress());
         txTemp.dataAccount(dataAccount.getAddress()).setText("cc-fin01-01", "{\"dest\":\"KA001\",\"id\":\"cc-fin01-01\",\"items\":\"FIN001|5000\",\"source\":\"FIN001\"}", -1);
-        txTemp.dataAccount(dataAccount.getAddress()).setJSON("cc-fin02-01", "{\"dest\":\"KA001\",\"id\":\"cc-fin02-01\",\"items\":\"FIN002|2000\",\"source\":\"FIN002\"}", -1);
 
         // TX 准备就绪
         commit(txTemp,signAdminKey,useCommitA);
@@ -479,6 +482,35 @@ public class SDKTest extends SDK_Base_Demo {
                 dataAccount.getAddress().toBase58(), "key1");
         System.out.println(String.format("key1 info:key=%s,value=%s,version=%d",
                 kvData[0].getKey(),kvData[0].getValue().toString(),kvData[0].getVersion()));
+
+        return dataAccount;
+    }
+
+    public BlockchainKeypair insertData(BlockchainKeypair dataAccount, BlockchainKeypair signAdminKey,
+                             String key, String value, long version) {
+        if (!isTest) return null;
+        // 在本地定义注册账号的 TX；
+        TransactionTemplate txTemp = blockchainService.newTransaction(ledgerHash);
+        //采用KeyGenerator来生成BlockchainKeypair;
+        if(dataAccount == null){
+            dataAccount = BlockchainKeyGenerator.getInstance().generate();
+            txTemp.dataAccounts().register(dataAccount.getIdentity());
+        }
+
+        this.strDataAccount = dataAccount.getAddress().toBase58();
+        System.out.println("current dataAccount=" + dataAccount.getAddress());
+        txTemp.dataAccount(dataAccount.getAddress()).setText(key, value, version);
+
+        // TX 准备就绪
+        commit(txTemp,signAdminKey,useCommitA);
+
+        //get the version
+        TypedKVEntry[] kvData = blockchainService.getDataEntries(ledgerHash,
+                dataAccount.getAddress().toBase58(), key);
+        System.out.println(String.format("key1 info:key=%s,value=%s,version=%d",
+                kvData[0].getKey(),kvData[0].getValue().toString(),kvData[0].getVersion()));
+
+        return dataAccount;
     }
 
     @Test
@@ -535,5 +567,45 @@ public class SDKTest extends SDK_Base_Demo {
         this.insertData();
         this.executeContractOK();
 //        getData(null);
+    }
+
+    /**
+     * 哈希上链; 提取一个图片的hash值，然后上链；
+     * 从链上获取这个信息，然后跟原图片对比，看是否被篡改;
+     * 1) 原版图片生成hash，上链;
+     * 2)从链上获得hash，然后从文件存储系统(内存模拟)获得图片，将图片重新生成hash，对比是否一致；
+     * 3）假定图片存储系统有瑕疵，篡改图片，验证是否能够被识别;
+     */
+    @Test
+    public void testHash2Ledger(){
+        String zhizhaoPath = "zhizhao-OK.jpg";
+        byte[] fileBytes = readChainCodes(zhizhaoPath);
+        byte[] bytes = ShaUtils.hash_256(fileBytes);
+        String zhizhaoHash256 = Hex.toHexString(bytes);
+        System.out.println("zhizhaoHash256="+zhizhaoHash256);
+        //将图片存储存储系统;
+        Map<String,byte[]> fileStoreSys = new HashMap<>();
+        fileStoreSys.put(zhizhaoHash256,fileBytes);
+
+        BlockchainKeypair dataAccount = this.insertData(null,null);
+        this.insertData(dataAccount,null,"zhizhao1",zhizhaoHash256,-1);
+        //从区块链上获取企业执照对应的hash;
+        TypedKVEntry[] kvData = blockchainService.getDataEntries(ledgerHash,
+                dataAccount.getAddress().toBase58(), "zhizhao1");
+        String hashInLedger = kvData[0].getValue().toString();
+        System.out.println(String.format("zhizhao1 info:key=%s,value=%s,version=%d",
+                kvData[0].getKey(),kvData[0].getValue().toString(),kvData[0].getVersion()));
+
+        //从文件系统中根据hash值获得图片，然后进行对比;
+        Assert.assertEquals(hashInLedger,
+                Hex.toHexString(ShaUtils.hash_256(fileStoreSys.get(hashInLedger))));
+
+        //对文件系统中图片做点手脚;
+        zhizhaoPath = "zhizhao-fake.jpg";
+        byte[] fakeZhizhaoBytes = readChainCodes(zhizhaoPath);
+        fileStoreSys.put(zhizhaoHash256,fakeZhizhaoBytes);
+        Assert.assertNotEquals(hashInLedger,
+                Hex.toHexString(ShaUtils.hash_256(fileStoreSys.get(hashInLedger))));
+
     }
 }
