@@ -5,7 +5,6 @@ import com.jd.blockchain.crypto.KeyGenUtils;
 import com.jd.blockchain.crypto.PrivKey;
 import com.jd.blockchain.crypto.PubKey;
 import com.jd.blockchain.ledger.*;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**

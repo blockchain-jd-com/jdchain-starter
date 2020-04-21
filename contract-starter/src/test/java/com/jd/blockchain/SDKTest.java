@@ -563,9 +563,9 @@ public class SDKTest extends SDK_Base_Demo {
         this.executeContractOK();
         useCommitA = false;
         System.out.println("######userCommitA==false");
-        this.registerUserTest();
-        this.insertData();
-        this.executeContractOK();
+//        this.registerUserTest();
+//        this.insertData();
+//        this.executeContractOK();
 //        getData(null);
     }
 
@@ -622,8 +622,8 @@ public class SDKTest extends SDK_Base_Demo {
 
     @Test
     public void execOldContract(){
-        String dataAccountBase58PubKey = "3snPdw7i7PbhcdkAAczh6bpGLm8c9UkwYvjpe88qhSccuzsj1RQdCh";
-        String ContractBase58PubKey= "3snPdw7i7PcxZvqkn2exNVHXZ4fTs5LxCBY3YZWiWWzLUeFve2rRhy";
+        String dataAccountBase58PubKey = "3snPdw7i7PdPyJ44k4UhDCB5qcbJeBAfWd7yfpYanygcS34475Ajew";
+        String ContractBase58PubKey= "3snPdw7i7PXgXvGcUAJJw2HSiRxcWZzp1UThEpsUeXLb6EBpKtgsBU";
         PubKey DataAccountPubKey = KeyGenUtils.decodePubKey(dataAccountBase58PubKey);
         PubKey ContractPubKey = KeyGenUtils.decodePubKey(ContractBase58PubKey);
         BlockchainIdentity dataAccount = new BlockchainIdentityData(DataAccountPubKey);

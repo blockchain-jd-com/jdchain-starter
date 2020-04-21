@@ -10,7 +10,6 @@ import com.jd.blockchain.transaction.SignatureUtils;
 import com.jd.blockchain.utils.Bytes;
 import com.jd.chain.contract.Guanghu;
 
-import static com.jd.blockchain.contract.SDKDemo_Constant.peer1Key;
 import static com.jd.blockchain.contract.SDKDemo_Constant.readChainCodes;
 import static com.jd.blockchain.transaction.ContractReturnValue.decode;
 
@@ -133,7 +132,7 @@ public abstract class SDK_Base_Demo {
         TransactionContent txContent = BinaryProtocol.decode(txContentBytes, TransactionContent.class);
 
         // 对交易内容签名；
-        DigitalSignature signature1 = SignatureUtils.sign(txContent, peer1Key);
+        DigitalSignature signature1 = SignatureUtils.sign(txContent, adminKey);
 
         // 根据交易内容重新准备交易；
         PreparedTransaction decodedPrepTx = blockchainService.prepareTransaction(txContent);
