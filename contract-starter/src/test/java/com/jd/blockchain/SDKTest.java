@@ -622,8 +622,8 @@ public class SDKTest extends SDK_Base_Demo {
 
     @Test
     public void execOldContract(){
-        String dataAccountBase58PubKey = "3snPdw7i7PgfkrEhNK3Lq84HU6PxAoVyMZ6iMgL6pVNRWuoH2i6uiB";
-        String ContractBase58PubKey= "3snPdw7i7PfPRmhCCcdKNupXXrB3kACB2VsZJHk9wQJzdjpSKY7r9B";
+        String dataAccountBase58PubKey = "3snPdw7i7PbhcdkAAczh6bpGLm8c9UkwYvjpe88qhSccuzsj1RQdCh";
+        String ContractBase58PubKey= "3snPdw7i7PcxZvqkn2exNVHXZ4fTs5LxCBY3YZWiWWzLUeFve2rRhy";
         PubKey DataAccountPubKey = KeyGenUtils.decodePubKey(dataAccountBase58PubKey);
         PubKey ContractPubKey = KeyGenUtils.decodePubKey(ContractBase58PubKey);
         BlockchainIdentity dataAccount = new BlockchainIdentityData(DataAccountPubKey);
@@ -637,7 +637,8 @@ public class SDKTest extends SDK_Base_Demo {
                 false,true, dataAccount,"bizName","jd2");
         this.contractHandle(null,null,contractIdentity,
                 false,true, dataAccount,"bizName","jd3");
-
-
+        String bizInfo = "{\"dest\":\"KA001\",\"id\":\"cc-fin01-01\",\"items\":\"FIN001|5000\",\"source\":\"FIN001\"}";
+        this.contractHandle(null,null,contractIdentity,
+                false,true, dataAccount,"bizInfo",bizInfo);
     }
 }
