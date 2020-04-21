@@ -32,11 +32,11 @@ public class SDKDemo_Constant {
 
     public static String GW_IPADDR = "jdchain2-18081.jd.com";
     public static int GW_PORT = 80;
-    public static String GW_PUB_KEY[] = {"3snPdw7i7PjXU3qkPdRNRch974TDGbqim2Dm1GbJDuUYqfjyYUEfSU",
+    public static String GW_PUB_KEY[] = {"3snPdw7i7PXVXYjsBDQAjyExMjVLEVNYViK8fkTfexjqbxqsWgZVGX",
         "3snPdw7i7Pf8eJ1uycdAM6spw7XjbST7m39MZbD9qdL4QEzoBAwLKh"};
-    public static String GW_PRIV_KEY[] = {"177gjyztVu92xSMda4FkhHfS6CvisvJ4nC9mSVscVsvAWN649Epy6yZ1PYYTZ4vaG1ByWZA",
+    public static String GW_PRIV_KEY[] = {"177gjufK1ZNFncmgdCwGYs6cnyeu8HoG6wsc2XKesGEGxfTrPYqYWi2GfRE55SAxvtY4KbJ",
             "177gjyFk3VDzfExR1a5NxHvSGqS9FJ2aNAaqMgNyTUrRguMA9jN6Bp3vasUB7wXr1cqcDdj"};
-    public static String GW_PASSWORD = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
+    public static String GW_PASSWORD = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
 
     //use new user to link gw;
 //    public static String GW_PUB_KEY[] = {"3snPdw7i7PdktosF4iYd7dSeumq6hpLnwtrRCLQWkpdpntMxABvJdZ",
