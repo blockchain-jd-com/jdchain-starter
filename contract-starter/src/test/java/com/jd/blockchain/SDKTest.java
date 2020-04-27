@@ -641,4 +641,21 @@ public class SDKTest extends SDK_Base_Demo {
         this.contractHandle(null,null,contractIdentity,
                 false,true, dataAccount,"bizInfo",bizInfo);
     }
+
+    @Test
+    public void insertDataByVersion() {
+        BlockchainKeypair dataAccount = this.insertData(null,null);
+        this.insertData(dataAccount,null,"k1","value1",-1);
+        for(int i=0;i<5;i++){
+            //get the version
+            TypedKVEntry[] kvData = blockchainService.getDataEntries(ledgerHash,
+                    dataAccount.getAddress().toBase58(), "k1");
+            this.insertData(dataAccount,null,"k1","v"+i,kvData[0].getVersion());
+        }
+
+        TypedKVEntry[] kvData = blockchainService.getDataEntries(ledgerHash,
+                dataAccount.getAddress().toBase58(), "k1");
+        System.out.println(String.format("after loop, info:key=%s,value=%s,version=%d",
+                kvData[0].getKey(),kvData[0].getValue().toString(),kvData[0].getVersion()));
+    }
 }
