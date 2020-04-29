@@ -645,7 +645,7 @@ public class SDKTest extends SDK_Base_Demo {
     @Test
     public void insertDataByVersion() {
         BlockchainKeypair dataAccount = this.insertData(null,null);
-        this.insertData(dataAccount,null,"k1","value1",-1);
+        this.insertData(dataAccount,null,"key1","value1",-1);
         for(int i=0;i<5;i++){
             //get the version
             TypedKVEntry[] kvData = blockchainService.getDataEntries(ledgerHash,
@@ -657,5 +657,15 @@ public class SDKTest extends SDK_Base_Demo {
                 dataAccount.getAddress().toBase58(), "k1");
         System.out.println(String.format("after loop, info:key=%s,value=%s,version=%d",
                 kvData[0].getKey(),kvData[0].getValue().toString(),kvData[0].getVersion()));
+    }
+
+    //5.使用相同的用户注册;
+    @Test
+    public void test_registerUser1() {
+        PrivKey privKey = KeyGenUtils.decodePrivKey("177gjskNxyjGaFVWHfVVngVGHzLf7YrHSBrw8hNRaqQSNoApR1sC1rjE92uM73NVrbLhRwK",
+                "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY");
+        PubKey pubKey = KeyGenUtils.decodePubKey("3snPdw7i7Phr1e5PPn61Z5VVLdy4PmMo6RnTpBSEmM5EZiUEFDcEja");
+        BlockchainKeypair newUser = new BlockchainKeypair(pubKey, privKey);
+        this.registerUser(null, newUser);
     }
 }
