@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jdchain-starter</artifactId>
         <groupId>com.jd.blockchain</groupId>
-        <version>1.0.8.RELEASE</version>
+        <version>1.0.9.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -19,8 +19,38 @@
     <dependencies>
         <dependency>
             <groupId>com.jd.blockchain</groupId>
-            <artifactId>sdk-pack</artifactId>
+            <artifactId>contract-starter</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>sdk-client</artifactId>
+            <version>${ledger.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>sdk-rpc</artifactId>
+            <version>${ledger.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>ledger-model</artifactId>
+            <version>${ledger.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>crypto-classic</artifactId>
+            <version>${ledger.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>crypto-sm</artifactId>
+            <version>${ledger.version}</version>
         </dependency>
     </dependencies>
 
@@ -45,26 +75,9 @@
                 <groupId>com.jd.blockchain</groupId>
                 <artifactId>contract-maven-plugin</artifactId>
                 <version>${ledger.version}</version>
-                <executions>
-                    <execution>
-                        <id>make-contract</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>${mainClass}</mainClass>
-                        </manifest>
-                    </archive>
-                    <finalName>contract</finalName>
-                </configuration>
+                <extensions>true</extensions>
             </plugin>
 
         </plugins>
     </build>
-
 </project>

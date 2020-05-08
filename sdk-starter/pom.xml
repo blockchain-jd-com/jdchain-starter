@@ -5,19 +5,25 @@
     <parent>
         <artifactId>jdchain-starter</artifactId>
         <groupId>com.jd.blockchain</groupId>
-        <version>1.0.8.RELEASE</version>
+        <version>1.0.9.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>contract-starter</artifactId>
+    <artifactId>sdk-starter</artifactId>
 
-    <name>contract-starter</name>
+    <name>sdk-starter</name>
 
     <dependencies>
         <dependency>
             <groupId>com.jd.blockchain</groupId>
             <artifactId>contract-compile</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>contract-starter</artifactId>
+            <version>${ledger.version}</version>
         </dependency>
 
         <dependency>
@@ -34,7 +40,7 @@
 
         <dependency>
             <groupId>com.jd.blockchain</groupId>
-            <artifactId>sdk-pack</artifactId>
+            <artifactId>contract-starter</artifactId>
         </dependency>
         <!--<dependency>-->
             <!--<groupId>com.jd.blockchain</groupId>-->
@@ -49,21 +55,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.0.6.RELEASE</version>
-                <configuration>
-                    <mainClass>com.jd.blockchain.contract.SDK4Jenkins</mainClass>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 </project>
