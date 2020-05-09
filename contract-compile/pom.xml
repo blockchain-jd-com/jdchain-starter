@@ -22,36 +22,6 @@
             <artifactId>contract-starter</artifactId>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.jd.blockchain</groupId>
-            <artifactId>sdk-client</artifactId>
-            <version>${ledger.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.jd.blockchain</groupId>
-            <artifactId>sdk-rpc</artifactId>
-            <version>${ledger.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.jd.blockchain</groupId>
-            <artifactId>ledger-model</artifactId>
-            <version>${ledger.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.jd.blockchain</groupId>
-            <artifactId>crypto-classic</artifactId>
-            <version>${ledger.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.jd.blockchain</groupId>
-            <artifactId>crypto-sm</artifactId>
-            <version>${ledger.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -71,12 +41,32 @@
                 </configuration>
             </plugin>
 
+            <!-- 合约编译、打包、发布插件 -->
             <plugin>
                 <groupId>com.jd.blockchain</groupId>
                 <artifactId>contract-maven-plugin</artifactId>
                 <version>${ledger.version}</version>
                 <extensions>true</extensions>
+
+                <!-- 合约发布配置，不配置时请不要执行deploy阶段 -->
+                <configuration>
+                    <deployment>
+                        <!-- 线上网关的配置，必选项 -->
+                        <gateway>
+                            <host>127.0.0.1</host>
+                            <port>11000</port>
+                        </gateway>
+
+                        <!-- 签名信息，必选项，任何一个合约发布都需要拥有者进行签名 -->
+                        <signer>
+                            <pubKey>3snPdw7i7PjVKiTH2VnXZu5H8QmNaSXpnk4ei533jFpuifyjS5zzH9</pubKey>
+                            <privKey>177gjzHTznYdPgWqZrH43W3yp37onm74wYXT4v9FukpCHBrhRysBBZh7Pzdo5AMRyQGJD7x</privKey>
+                            <privKeyPwd>DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY</privKeyPwd>
+                        </signer>
+                    </deployment>
+                </configuration>
             </plugin>
+
 
         </plugins>
     </build>
