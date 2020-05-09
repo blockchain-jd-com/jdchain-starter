@@ -22,7 +22,7 @@
 
         <dependency>
             <groupId>com.jd.blockchain</groupId>
-            <artifactId>contract-starter</artifactId>
+            <artifactId>sdk-pack</artifactId>
             <version>${ledger.version}</version>
         </dependency>
 

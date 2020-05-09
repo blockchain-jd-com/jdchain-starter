@@ -1,18 +1,51 @@
 package com.jd.blockchain.util;
 
 import com.jd.blockchain.SDKTest;
+import com.jd.blockchain.ledger.BlockchainKeyGenerator;
+import com.jd.blockchain.ledger.BlockchainKeypair;
+import com.jd.blockchain.ledger.TransactionTemplate;
+import com.jd.blockchain.ledger.TypedKVEntry;
 import org.junit.Test;
 
-import java.util.concurrent.*;
+import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PerformanceTest extends SDKTest {
 
     @Test
-    public void insertDataMore() throws InterruptedException {
-        for (int i = 0; i < 15; i++) {
-            insertData();
-            Thread.sleep(1000);
+    public void insertDataMore() {
+        for (int i=1;i<=256;i=i*2){
+            String fileName= "1-"+i+"k";
+            byte[] arr = new byte[i*1024];
+            new Random().nextBytes(arr);
+            long startTime = System.currentTimeMillis();
+            this.insertData("key1",arr);
+            System.out.println("base58,"+fileName+",spend time="+(System.currentTimeMillis()-startTime));
+            startTime = System.currentTimeMillis();
+//            Base58Utils.encode(arr);
+            System.out.println("Base58Utils,"+fileName+",spend time="+(System.currentTimeMillis()-startTime));
         }
+    }
+
+    private void insertData(String key, byte[] bytes){
+        TransactionTemplate txTemp = blockchainService.newTransaction(ledgerHash);
+        //采用KeyGenerator来生成BlockchainKeypair;
+        BlockchainKeypair dataAccount = BlockchainKeyGenerator.getInstance().generate();
+        txTemp.dataAccounts().register(dataAccount.getIdentity());
+
+        System.out.println("current dataAccount=" + dataAccount.getAddress());
+        txTemp.dataAccount(dataAccount.getAddress()).setBytes(key, bytes, -1);
+
+        // TX 准备就绪
+        commit(txTemp,null,useCommitA);
+
+        //get the version
+        TypedKVEntry[] kvData = blockchainService.getDataEntries(ledgerHash,
+                dataAccount.getAddress().toBase58(), key);
+        System.out.println(String.format("key1 info:key=%s,value=%s,version=%d",
+                kvData[0].getKey(),kvData[0].getValue().toString(),kvData[0].getVersion()));
     }
 
     /**
