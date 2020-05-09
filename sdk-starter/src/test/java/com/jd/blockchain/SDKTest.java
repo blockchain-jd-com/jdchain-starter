@@ -12,7 +12,7 @@ import com.jd.blockchain.utils.Bytes;
 import com.jd.blockchain.utils.codec.Base58Utils;
 import com.jd.blockchain.utils.io.ByteArray;
 import com.jd.blockchain.utils.security.ShaUtils;
-import com.jd.chain.contract.Guanghu;
+import com.jd.chain.contract.TransferContract;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.Assert;
 import org.junit.Before;
@@ -302,7 +302,7 @@ public class SDKTest extends SDK_Base_Demo {
     private String createBif(String address, String account, String content, Bytes contractAddress, String isHalf) {
         TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
         // 使用合约创建
-        Guanghu guanghu = txTpl.contract(contractAddress, Guanghu.class);
+        TransferContract guanghu = txTpl.contract(contractAddress, TransferContract.class);
         GenericValueHolder<String> result = decode(guanghu.putvalBifurcation(address, account, content, isHalf));
         commitA(txTpl);
         return result.get();

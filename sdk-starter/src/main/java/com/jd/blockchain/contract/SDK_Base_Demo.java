@@ -8,7 +8,7 @@ import com.jd.blockchain.sdk.client.GatewayServiceFactory;
 import com.jd.blockchain.transaction.GenericValueHolder;
 import com.jd.blockchain.transaction.SignatureUtils;
 import com.jd.blockchain.utils.Bytes;
-import com.jd.chain.contract.Guanghu;
+import com.jd.chain.contract.TransferContract;
 
 import static com.jd.blockchain.contract.SDKDemo_Constant.readChainCodes;
 import static com.jd.blockchain.transaction.ContractReturnValue.decode;
@@ -219,7 +219,7 @@ public abstract class SDK_Base_Demo {
                 address,account,content,contractAddress.toBase58()));
         TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
         // 使用合约创建
-        Guanghu guanghu = txTpl.contract(contractAddress, Guanghu.class);
+        TransferContract guanghu = txTpl.contract(contractAddress, TransferContract.class);
         GenericValueHolder<String> result = decode(guanghu.putval(address, account, content, System.currentTimeMillis()));
         commit(txTpl,useCommitA);
         return result.get();
