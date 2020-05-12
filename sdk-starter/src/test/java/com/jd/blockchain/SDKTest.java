@@ -668,4 +668,21 @@ public class SDKTest extends SDK_Base_Demo {
         BlockchainKeypair newUser = new BlockchainKeypair(pubKey, privKey);
         this.registerUser(null, newUser);
     }
+
+    /**
+     * 验证通过：mvn clean deploy，发布合约后，再执行合约;
+     */
+    @Test
+    public void executeContract1(){
+        // 注册一个数据账户
+        BlockchainIdentity dataAccount = createDataAccount();
+        String key = "jd_zhangsan";
+        String value = "{\"dest\":\"KA006\",\"id\":\"cc-fin08-01\",\"items\":\"FIN001|3030\",\"source\":\"FIN001\"}";
+        // 获取数据账户地址x
+        String dataAddress = dataAccount.getAddress().toBase58();
+        // 打印数据账户地址
+        System.out.printf("DataAccountAddress = %s \r\n", dataAddress);
+        Bytes contractAddress = Bytes.fromBase58("LdeNiLcQotLvq1PzByCiUBuQVhb5uCDzGXQSC");
+        System.out.println("return value = "+create1(contractAddress, dataAddress, key, value));
+    }
 }

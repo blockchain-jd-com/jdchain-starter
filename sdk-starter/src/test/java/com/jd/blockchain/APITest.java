@@ -20,10 +20,10 @@ public class APITest {
 
     @Before
     public void setup(){
-        ipPort = "http://localhost:11000/";
-        ledgerHash = "j5jeQnyTopJWUP8pNs5vWUk9cFwfRYAzkjAB6DbRCcPdAn";
-//        ipPort = "http://jdchain1-8081.jd.com:80/";
-//        ledgerHash = "j5mfQ6A3NTXisVjsMD46uHrkj3puZJCTkgwjxNDVYV1UmA";
+//        ipPort = "http://localhost:11000/";
+//        ledgerHash = "j5jeQnyTopJWUP8pNs5vWUk9cFwfRYAzkjAB6DbRCcPdAn";
+        ipPort = "http://jdchain2-18081.jd.com:80/";
+        ledgerHash = "j5tjJfCBrssTCmweCcbfkgbhC54YviJTyE2dvTEaPjPwez";
 
 //        ipPort = "http://jdchain-cloud4-8080.jdfmgt.com/";
 //        ledgerHash = "j5s3Xx2djijUi7NewerfPtRTta3EAa9ErNcBsHgzkDND7g";
