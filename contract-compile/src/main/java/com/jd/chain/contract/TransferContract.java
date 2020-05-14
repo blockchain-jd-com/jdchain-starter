@@ -24,6 +24,9 @@ public interface TransferContract {
     @ContractEvent(name = "putvalBif")
     String putvalBifurcation(String address, String account, String content, String isHalf);
 
+    @ContractEvent(name = "getTxSigners")
+    String getTxSigners();
+
     @ContractEvent(name = "test")
     String test();
 }

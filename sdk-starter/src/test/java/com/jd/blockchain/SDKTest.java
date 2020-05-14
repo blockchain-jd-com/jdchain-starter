@@ -674,6 +674,7 @@ public class SDKTest extends SDK_Base_Demo {
      */
     @Test
     public void executeContract1(){
+        Bytes contractAddress = Bytes.fromBase58("LdeNyvnhGZpXTxjtT9pG9jB25MhrRZQS22jw4");
         // 注册一个数据账户
         BlockchainIdentity dataAccount = createDataAccount();
         String key = "jd_zhangsan";
@@ -682,7 +683,8 @@ public class SDKTest extends SDK_Base_Demo {
         String dataAddress = dataAccount.getAddress().toBase58();
         // 打印数据账户地址
         System.out.printf("DataAccountAddress = %s \r\n", dataAddress);
-        Bytes contractAddress = Bytes.fromBase58("LdeNiLcQotLvq1PzByCiUBuQVhb5uCDzGXQSC");
         System.out.println("return value = "+create1(contractAddress, dataAddress, key, value));
+
+        System.out.println(getTxSigners(contractAddress));
     }
 }

@@ -225,6 +225,16 @@ public abstract class SDK_Base_Demo {
         return result.get();
     }
 
+    public String getTxSigners(Bytes contractAddress) {
+        System.out.println(String.format("params,Bytes contractAddress=%s",contractAddress.toBase58()));
+        TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
+        // 使用合约创建
+        TransferContract guanghu = txTpl.contract(contractAddress, TransferContract.class);
+        GenericValueHolder<String> result = decode(guanghu.getTxSigners());
+        commit(txTpl,useCommitA);
+        return result.get();
+    }
+
     public BlockchainIdentity contractHandle(String contractZipName, BlockchainKeypair signAdminKey,
                                             BlockchainIdentity contractDeployIdentity, boolean isDeploy,
                                boolean isExecute, BlockchainIdentity dataAccount, String key, String value) {

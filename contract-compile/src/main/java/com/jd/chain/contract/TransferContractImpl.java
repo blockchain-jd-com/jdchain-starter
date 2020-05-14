@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.jd.blockchain.contract.ContractEventContext;
 import com.jd.blockchain.contract.EventProcessingAware;
 import com.jd.blockchain.crypto.HashDigest;
+import com.jd.blockchain.ledger.BlockchainIdentity;
 import com.jd.blockchain.ledger.KVDataVO;
 import com.jd.blockchain.ledger.KVInfoVO;
 import com.jd.blockchain.ledger.TypedKVEntry;
+
+import java.util.Set;
 
 public class TransferContractImpl implements EventProcessingAware, TransferContract {
 
@@ -143,6 +146,14 @@ public class TransferContractImpl implements EventProcessingAware, TransferContr
 
         return String.format("DataAccountAddress[%s] -> Create(By Contract Operation) Account = %s and Money = %s Success!!! \r\n",
                 address, account, content);
+    }
+
+    @Override
+    public String getTxSigners() {
+        Set<BlockchainIdentity> blockchainIdentitySet = eventContext.getTxSigners();
+        StringBuffer stringBuffer = new StringBuffer(200);
+        blockchainIdentitySet.forEach(obj -> stringBuffer.append(obj.getAddress()).append("###"));
+        return "txSigners="+stringBuffer.toString();
     }
 
     @Override

@@ -1,8 +1,12 @@
 package com.jd.blockchain.util;
 
 import com.jd.blockchain.SDKTest;
+import com.jd.blockchain.crypto.HashDigest;
 import com.jd.blockchain.ledger.BlockchainKeyGenerator;
 import com.jd.blockchain.ledger.BlockchainKeypair;
+import com.jd.blockchain.ledger.DigitalSignature;
+import com.jd.blockchain.ledger.Transaction;
+import com.jd.blockchain.ledger.TransactionResponse;
 import com.jd.blockchain.ledger.TransactionTemplate;
 import com.jd.blockchain.ledger.TypedKVEntry;
 import org.junit.Test;
@@ -29,7 +33,30 @@ public class PerformanceTest extends SDKTest {
         }
     }
 
-    private void insertData(String key, byte[] bytes){
+    @Test
+    public void insertBigData() {
+        int i = 1000;//unit:K;max=4095;
+        String fileName= "1-"+i+"k";
+        byte[] arr = new byte[i*1024];
+        new Random().nextBytes(arr);
+        long startTime = System.currentTimeMillis();
+        HashDigest contentHash=this.insertData("key1",arr);
+        System.out.println("base58,"+fileName+",spend time="+(System.currentTimeMillis()-startTime));
+        startTime = System.currentTimeMillis();
+        System.out.println("Base58Utils,"+fileName+",spend time="+(System.currentTimeMillis()-startTime));
+        System.out.println("contentHash="+contentHash);
+        System.out.println("getTransactionByContentHash pre...");
+        Transaction tx = blockchainService.getTransactionByContentHash(ledgerHash,contentHash);
+        System.out.println("getTransactionByContentHash after...");
+        DigitalSignature[] signatures = tx.getEndpointSignatures();
+        for (DigitalSignature signature : signatures) {
+            System.out.println("signer's pubKey="+signature.getPubKey().toBase58());
+        }
+        System.out.println("transaction.blockHeight=" + tx.getBlockHeight());
+        System.out.println("transaction.executionState=" + tx.getExecutionState());
+    }
+
+    private HashDigest insertData(String key, byte[] bytes){
         TransactionTemplate txTemp = blockchainService.newTransaction(ledgerHash);
         //采用KeyGenerator来生成BlockchainKeypair;
         BlockchainKeypair dataAccount = BlockchainKeyGenerator.getInstance().generate();
@@ -39,13 +66,17 @@ public class PerformanceTest extends SDKTest {
         txTemp.dataAccount(dataAccount.getAddress()).setBytes(key, bytes, -1);
 
         // TX 准备就绪
-        commit(txTemp,null,useCommitA);
+        TransactionResponse transactionResponse = commit(txTemp,null,useCommitA);
 
         //get the version
         TypedKVEntry[] kvData = blockchainService.getDataEntries(ledgerHash,
                 dataAccount.getAddress().toBase58(), key);
         System.out.println(String.format("key1 info:key=%s,value=%s,version=%d",
                 kvData[0].getKey(),kvData[0].getValue().toString(),kvData[0].getVersion()));
+        System.out.println("######getData start...");
+        getData(dataAccount.getAddress().toBase58());
+        System.out.println("contentHash="+transactionResponse.getContentHash().toBase58());
+        return transactionResponse.getContentHash();
     }
 
     /**
