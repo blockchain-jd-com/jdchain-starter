@@ -51,13 +51,17 @@
                 <configuration>
 <!--                    <maxCarSize>1</maxCarSize>-->
 <!--                    <maxCarSizeUnit>MB</maxCarSizeUnit>-->
-<!--                    <contractPubKey>3snPdw7i7Phr1e5PPn61Z5VVLdy4PmMo6RnTpBSEmM5EZiUEFDcEja</contractPubKey>-->
                     <deployment>
                         <!-- 线上网关的配置，必选项 -->
                         <gateway>
                             <host>jdchain2-18081.jd.com</host>
                             <port>80</port>
                         </gateway>
+
+                        <contractAddress>
+<!--                            <pubKey>3snPdw7i7Phr1e5PPn61Z5VVLdy4PmMo6RnTpBSEmM5EZiUEFDcEja</pubKey>-->
+                            <address>LdeNycwwksyMwLfYQ8zhVcwQGpX9WBh1rBd2o</address>
+                        </contractAddress>
 
                         <!-- 签名信息，必选项，任何一个合约发布都需要拥有者进行签名 -->
                         <signer>
