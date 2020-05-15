@@ -1,6 +1,8 @@
 package com.jd.blockchain.util;
 
 import com.jd.blockchain.crypto.*;
+import com.jd.blockchain.ledger.BlockchainIdentity;
+import com.jd.blockchain.ledger.BlockchainIdentityData;
 import com.jd.blockchain.ledger.BlockchainKeypair;
 import com.jd.blockchain.ledger.TypedValue;
 import com.jd.blockchain.transaction.KVData;
@@ -55,6 +57,9 @@ public class KeyTest {
         System.out.println("pubKey="+base58PubKey);
         System.out.println("privKey="+base58PrivKey);
         System.out.println("base58PwdKey="+base58PwdKey);
+        BlockchainIdentity blockchainIdentity = new BlockchainIdentityData(kp.getPubKey());
+        System.out.println("address="+blockchainIdentity.getAddress());
+
     }
 
     @Test

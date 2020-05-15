@@ -58,10 +58,9 @@
                             <port>80</port>
                         </gateway>
 
-                        <contractAddress>
-<!--                            <pubKey>3snPdw7i7Phr1e5PPn61Z5VVLdy4PmMo6RnTpBSEmM5EZiUEFDcEja</pubKey>-->
-                            <address>LdeNycwwksyMwLfYQ8zhVcwQGpX9WBh1rBd2o</address>
-                        </contractAddress>
+<!--                        <contractAddress>-->
+<!--                            <pubKey>3snPdw7i7Po4fYcXFxS4QztR8Dm4kLBdBpjsemuGPZRyZRBmtn5Z5u</pubKey>-->
+<!--                        </contractAddress>-->
 
                         <!-- 签名信息，必选项，任何一个合约发布都需要拥有者进行签名 -->
                         <signer>
