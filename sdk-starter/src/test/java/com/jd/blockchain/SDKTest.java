@@ -12,7 +12,7 @@ import com.jd.blockchain.utils.Bytes;
 import com.jd.blockchain.utils.codec.Base58Utils;
 import com.jd.blockchain.utils.io.ByteArray;
 import com.jd.blockchain.utils.security.ShaUtils;
-import com.jd.chain.contract.Guanghu;
+import com.jd.chain.contract.TransferContract;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.Assert;
 import org.junit.Before;
@@ -302,7 +302,7 @@ public class SDKTest extends SDK_Base_Demo {
     private String createBif(String address, String account, String content, Bytes contractAddress, String isHalf) {
         TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
         // 使用合约创建
-        Guanghu guanghu = txTpl.contract(contractAddress, Guanghu.class);
+        TransferContract guanghu = txTpl.contract(contractAddress, TransferContract.class);
         GenericValueHolder<String> result = decode(guanghu.putvalBifurcation(address, account, content, isHalf));
         commitA(txTpl);
         return result.get();
@@ -667,5 +667,24 @@ public class SDKTest extends SDK_Base_Demo {
         PubKey pubKey = KeyGenUtils.decodePubKey("3snPdw7i7Phr1e5PPn61Z5VVLdy4PmMo6RnTpBSEmM5EZiUEFDcEja");
         BlockchainKeypair newUser = new BlockchainKeypair(pubKey, privKey);
         this.registerUser(null, newUser);
+    }
+
+    /**
+     * 验证通过：mvn clean deploy，发布合约后，再执行合约;
+     */
+    @Test
+    public void executeContract1(){
+        Bytes contractAddress = Bytes.fromBase58("LdeNyvnhGZpXTxjtT9pG9jB25MhrRZQS22jw4");
+        // 注册一个数据账户
+        BlockchainIdentity dataAccount = createDataAccount();
+        String key = "jd_zhangsan";
+        String value = "{\"dest\":\"KA006\",\"id\":\"cc-fin08-01\",\"items\":\"FIN001|3030\",\"source\":\"FIN001\"}";
+        // 获取数据账户地址x
+        String dataAddress = dataAccount.getAddress().toBase58();
+        // 打印数据账户地址
+        System.out.printf("DataAccountAddress = %s \r\n", dataAddress);
+        System.out.println("return value = "+create1(contractAddress, dataAddress, key, value));
+
+        System.out.println(getTxSigners(contractAddress));
     }
 }

@@ -8,12 +8,11 @@
         <version>1.0.9.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>contract-compile</artifactId>
+    <packaging>contract</packaging>
+    <name>contract-compile</name>
 
     <properties>
-        <mainClass>com.jd.chain.contract.GuanghuImpl</mainClass>
-        <!--<mvnHome>E:\apache-maven-3.5.0\</mvnHome>-->
     </properties>
 
     <dependencies>
@@ -50,24 +49,28 @@
 
                 <!-- 合约发布配置，不配置时请不要执行deploy阶段 -->
                 <configuration>
+<!--                    <maxCarSize>1</maxCarSize>-->
+<!--                    <maxCarSizeUnit>MB</maxCarSizeUnit>-->
                     <deployment>
                         <!-- 线上网关的配置，必选项 -->
                         <gateway>
-                            <host>127.0.0.1</host>
-                            <port>11000</port>
+                            <host>jdchain2-18081.jd.com</host>
+                            <port>80</port>
                         </gateway>
+
+<!--                        <contractAddress>-->
+<!--                            <pubKey>3snPdw7i7Po4fYcXFxS4QztR8Dm4kLBdBpjsemuGPZRyZRBmtn5Z5u</pubKey>-->
+<!--                        </contractAddress>-->
 
                         <!-- 签名信息，必选项，任何一个合约发布都需要拥有者进行签名 -->
                         <signer>
-                            <pubKey>3snPdw7i7PjVKiTH2VnXZu5H8QmNaSXpnk4ei533jFpuifyjS5zzH9</pubKey>
-                            <privKey>177gjzHTznYdPgWqZrH43W3yp37onm74wYXT4v9FukpCHBrhRysBBZh7Pzdo5AMRyQGJD7x</privKey>
+                            <pubKey>3snPdw7i7Phr1e5PPn61Z5VVLdy4PmMo6RnTpBSEmM5EZiUEFDcEja</pubKey>
+                            <privKey>177gjskNxyjGaFVWHfVVngVGHzLf7YrHSBrw8hNRaqQSNoApR1sC1rjE92uM73NVrbLhRwK</privKey>
                             <privKeyPwd>DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY</privKeyPwd>
                         </signer>
                     </deployment>
                 </configuration>
             </plugin>
-
-
         </plugins>
     </build>
 </project>

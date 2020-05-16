@@ -79,7 +79,7 @@ public class PermissionTest extends SDK_Base_Demo {
 
         txTemp.security().authorziations().forUser(newUser.getIdentity()).
                 setPolicy(RolesPolicy.UNION).authorize("MANAGER0").
-                unauthorize("MANAGER1").authorize("MANAGER3");
+                authorize("MANAGER1").unauthorize("MANAGER3");
         commitA(txTemp,adminKey);
     }
 }
