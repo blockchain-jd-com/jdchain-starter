@@ -323,6 +323,13 @@ public class SDKTest extends SDK_Base_Demo {
         }
     }
 
+    @Test
+    public void insertDataMore() {
+        for (int i = 0; i < 15; i++) {
+            this.insertData();
+        }
+    }
+
     /**
      * use the exist user to sign;
      */
@@ -674,7 +681,7 @@ public class SDKTest extends SDK_Base_Demo {
      */
     @Test
     public void executeContract1(){
-        Bytes contractAddress = Bytes.fromBase58("LdeNyvnhGZpXTxjtT9pG9jB25MhrRZQS22jw4");
+        Bytes contractAddress = Bytes.fromBase58("LdeNetUByGkkrY2WmtHsbpa2hKYNPiJ6rV3oN");
         // 注册一个数据账户
         BlockchainIdentity dataAccount = createDataAccount();
         String key = "jd_zhangsan";
