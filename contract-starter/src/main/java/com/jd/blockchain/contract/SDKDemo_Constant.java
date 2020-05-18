@@ -13,22 +13,24 @@ import java.io.InputStream;
 public class SDKDemo_Constant {
 
     //localhost
-    public static  String GW_IPADDR = "localhost";
-    public static  int GW_PORT = 11000;
-    public static String GW_PUB_KEY[] = {"3snPdw7i7PjVKiTH2VnXZu5H8QmNaSXpnk4ei533jFpuifyjS5zzH9",
-            "3snPdw7i7PajLB35tEau1kmixc6ZrjLXgxwKbkv5bHhP7nT5dhD9eX"};
-    public static String GW_PRIV_KEY[] = {"177gjzHTznYdPgWqZrH43W3yp37onm74wYXT4v9FukpCHBrhRysBBZh7Pzdo5AMRyQGJD7x",
-            "177gju9p5zrNdHJVEQnEEKF4ZjDDYmAXyfG84V5RPGVc5xFfmtwnHA7j51nyNLUFffzz5UT"};
-    public static String GW_PASSWORD = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
+//    public static  String GW_IPADDR = "localhost";
+//    public static  int GW_PORT = 11000;
+//    public static String GW_PUB_KEY[] = {"3snPdw7i7PjVKiTH2VnXZu5H8QmNaSXpnk4ei533jFpuifyjS5zzH9",
+//            "3snPdw7i7PajLB35tEau1kmixc6ZrjLXgxwKbkv5bHhP7nT5dhD9eX"};
+//    public static String GW_PRIV_KEY[] = {"177gjzHTznYdPgWqZrH43W3yp37onm74wYXT4v9FukpCHBrhRysBBZh7Pzdo5AMRyQGJD7x",
+//            "177gju9p5zrNdHJVEQnEEKF4ZjDDYmAXyfG84V5RPGVc5xFfmtwnHA7j51nyNLUFffzz5UT"};
+//    public static String GW_PASSWORD = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
+//    public static String GW_PASSWORD_PEER1 = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
 
     //another server;
-//    public static String GW_IPADDR = "jdchain-cloud4-8080.jdfmgt.com";
-//    public static int GW_PORT = 80;
-//    public static String GW_PUB_KEY[] = {"3snPdw7i7Po4VYVWquEwKMTzMqycJ6DbGwFbmJkB3Vgx5UBoHLAFXz",
-//            "3snPdw7i7Pg2qC7GbaN2Ly85BpZsRbncZcJtpeDRrr7aeKNkbMnSxM"};
-//    public static String GW_PRIV_KEY[] = {"177gjuFSYF1CM4rZ5Mp2AXdKNyg47V5JiWiJPGNwEeZ1wLMHpEjgEyvn5cMGnEvqMSc8gdg",
-//            "177gjz2q2LkJiUj52hz1NkQSSEoSZwNZB5brLQRFMBTSYkA19QQhwsgj2VExmAbeNSEgZj9"};
-//    public static String GW_PASSWORD = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
+    public static String GW_IPADDR = "jdchain-cloud0-8080.jdfmgt.com";
+    public static int GW_PORT = 80;
+    public static String GW_PUB_KEY[] = {"3snPdw7i7Pb2WSq3kRDrhwNCeaUeZKop96i4D2wp9XyHRnCA3BNNzt",
+            "3snPdw7i7Pg2qC7GbaN2Ly85BpZsRbncZcJtpeDRrr7aeKNkbMnSxM"};
+    public static String GW_PRIV_KEY[] = {"177gjzgZD2uZi2DFWJVzUTLYfoUxLU1qbktj1ugkzWLbPNrRx395hmmAYDLBJyxZWGQ7Tbv",
+            "177gjz2q2LkJiUj52hz1NkQSSEoSZwNZB5brLQRFMBTSYkA19QQhwsgj2VExmAbeNSEgZj9"};
+    public static String GW_PASSWORD = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
+    public static String GW_PASSWORD_PEER1 = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
 
 //    public static String GW_IPADDR = "jdchain1-8081.jd.com";
 //    public static int GW_PORT = 80;
@@ -43,7 +45,7 @@ public class SDKDemo_Constant {
     public static BlockchainKeypair adminKey = new BlockchainKeypair(gwPubKey0, gwPrivkey0);
 
 
-    public static PrivKey peer1Privkey0 = KeyGenUtils.decodePrivKey(GW_PRIV_KEY[1], GW_PASSWORD);
+    public static PrivKey peer1Privkey0 = KeyGenUtils.decodePrivKey(GW_PRIV_KEY[1], GW_PASSWORD_PEER1);
     public static PubKey peer1PubKey0 = KeyGenUtils.decodePubKey(GW_PUB_KEY[1]);
     public static BlockchainKeypair peer1Key = new BlockchainKeypair(peer1PubKey0, peer1Privkey0);
 
