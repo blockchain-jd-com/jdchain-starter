@@ -487,4 +487,14 @@ public class SDKTest extends SDK_Base_Demo {
         this.executeContractOK();
 
     }
+
+    //5.使用相同的用户注册;
+    @Test
+    public void test_registerUser1() {
+        PrivKey privKey = KeyGenUtils.decodePrivKey("177gjxvoT9qsJncbnwkhwwJXLahnYmwFYBSeR26tBhoJGhmRj6jtMEVUZF92Djr86nakwqM",
+                "DAc48C8t1V1UJk6ZvNQYXzEPbHgG3H8eTzGBNtZZMNPC");
+        PubKey pubKey = KeyGenUtils.decodePubKey("3snPdw7i7Pij7VXCkq7soCgAHSx5zS8S8vNdiV8DEkJ76eWKNd3sdd");
+        BlockchainKeypair newUser = new BlockchainKeypair(pubKey, privKey);
+        this.registerUser(null, newUser);
+    }
 }
