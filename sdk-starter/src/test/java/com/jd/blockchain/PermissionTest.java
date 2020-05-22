@@ -1,5 +1,7 @@
 package com.jd.blockchain;
 
+import com.alibaba.fastjson.JSONObject;
+import com.jd.blockchain.contract.PrivilegeSetInfo;
 import com.jd.blockchain.contract.SDK_Base_Demo;
 import com.jd.blockchain.crypto.KeyGenUtils;
 import com.jd.blockchain.crypto.PrivKey;
@@ -81,5 +83,13 @@ public class PermissionTest extends SDK_Base_Demo {
                 setPolicy(RolesPolicy.UNION).authorize("MANAGER0").
                 authorize("MANAGER1").unauthorize("MANAGER3");
         commitA(txTemp,adminKey);
+    }
+
+    @Test
+    public void getPrivilege(){
+        PrivilegeSet privilegeSet = blockchainService.getRolePrivileges(ledgerHash,"MANAGER0");
+        PrivilegeSetInfo jsonObject = JSONObject.parseObject(privilegeSet.toString(), PrivilegeSetInfo.class);
+        RoleSet userRoles = blockchainService.getUserRoles(ledgerHash,"LdeNwH71wxtbf1UM8ExRG8qbPnu17MdnRSVva");
+        UserPrivilege userPrivilege = blockchainService.getUserPrivileges(ledgerHash,"LdeNwH71wxtbf1UM8ExRG8qbPnu17MdnRSVva");
     }
 }
