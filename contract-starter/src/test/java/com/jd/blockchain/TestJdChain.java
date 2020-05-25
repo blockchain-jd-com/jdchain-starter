@@ -4,6 +4,8 @@ import com.jd.blockchain.crypto.HashDigest;
 import com.jd.blockchain.crypto.KeyGenUtils;
 import com.jd.blockchain.crypto.PrivKey;
 import com.jd.blockchain.crypto.PubKey;
+import com.jd.blockchain.ledger.BlockchainIdentity;
+import com.jd.blockchain.ledger.BlockchainKeyGenerator;
 import com.jd.blockchain.ledger.BlockchainKeypair;
 import com.jd.blockchain.ledger.PreparedTransaction;
 import com.jd.blockchain.ledger.TransactionResponse;
@@ -39,12 +41,14 @@ public class TestJdChain {
         // 在本地定义注册账号的 TX；
         TransactionTemplate txTemp = service.newTransaction(ledgerHashs[0]);
 
-        txTemp.dataAccounts().register(CLIENT_CERT.getIdentity());
-        txTemp.dataAccount(CLIENT_CERT.getAddress()).setText("key1","value1",-1);
+        BlockchainKeypair blockchainKeypair = BlockchainKeyGenerator.getInstance().generate();
+//        txTemp.dataAccounts().register(CLIENT_CERT.getIdentity());
+        txTemp.dataAccounts().register(blockchainKeypair.getIdentity());
+        txTemp.dataAccount(blockchainKeypair.getAddress()).setText("key1","value1",-1);
         //add some data for retrieve;
-        System.out.println("current dataAccount="+CLIENT_CERT.getAddress());
-        txTemp.dataAccount(CLIENT_CERT.getAddress()).setText("cc-fin01-01","{\"dest\":\"KA001\",\"id\":\"cc-fin01-01\",\"items\":\"FIN001|5000\",\"source\":\"FIN001\"}",-1);
-        txTemp.dataAccount(CLIENT_CERT.getAddress()).setText("cc-fin02-01","{\"dest\":\"KA001\",\"id\":\"cc-fin02-01\",\"items\":\"FIN002|2000\",\"source\":\"FIN002\"}",-1);
+        System.out.println("current dataAccount="+blockchainKeypair.getAddress());
+        txTemp.dataAccount(blockchainKeypair.getAddress()).setText("cc-fin01-01","{\"dest\":\"KA001\",\"id\":\"cc-fin01-01\",\"items\":\"FIN001|5000\",\"source\":\"FIN001\"}",-1);
+        txTemp.dataAccount(blockchainKeypair.getAddress()).setText("cc-fin02-01","{\"dest\":\"KA001\",\"id\":\"cc-fin02-01\",\"items\":\"FIN002|2000\",\"source\":\"FIN002\"}",-1);
 
         // TX 准备就绪
         PreparedTransaction prepTx = txTemp.prepare();
