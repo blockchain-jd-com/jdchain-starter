@@ -1,13 +1,21 @@
 package com.jd.blockchain;
 
-import com.alibaba.fastjson.JSONObject;
-import com.jd.blockchain.contract.PrivilegeSetInfo;
 import com.jd.blockchain.contract.SDK_Base_Demo;
 import com.jd.blockchain.crypto.KeyGenUtils;
 import com.jd.blockchain.crypto.PrivKey;
 import com.jd.blockchain.crypto.PubKey;
-import com.jd.blockchain.ledger.*;
+import com.jd.blockchain.ledger.BlockchainKeypair;
+import com.jd.blockchain.ledger.LedgerPermission;
+import com.jd.blockchain.ledger.PrivilegeSetVO;
+import com.jd.blockchain.ledger.RoleSet;
+import com.jd.blockchain.ledger.RolesPolicy;
+import com.jd.blockchain.ledger.TransactionPermission;
+import com.jd.blockchain.ledger.TransactionResponse;
+import com.jd.blockchain.ledger.TransactionTemplate;
+import com.jd.blockchain.ledger.UserPrivilege;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * @author zhaogw
@@ -77,7 +85,7 @@ public class PermissionTest extends SDK_Base_Demo {
         System.out.println("pubKey="+newUser.getPubKey().toBase58());
         System.out.println("privKey="+newUser.getPrivKey().toBase58());
 
-//        txTemp.users().register(newUser.getIdentity());
+        txTemp.users().register(newUser.getIdentity());
 
         txTemp.security().authorziations().forUser(newUser.getIdentity()).
                 setPolicy(RolesPolicy.UNION).authorize("MANAGER0").
@@ -87,9 +95,12 @@ public class PermissionTest extends SDK_Base_Demo {
 
     @Test
     public void getPrivilege(){
-        PrivilegeSet privilegeSet = blockchainService.getRolePrivileges(ledgerHash,"MANAGER0");
-        PrivilegeSetInfo jsonObject = JSONObject.parseObject(privilegeSet.toString(), PrivilegeSetInfo.class);
-        RoleSet userRoles = blockchainService.getUserRoles(ledgerHash,"LdeNwH71wxtbf1UM8ExRG8qbPnu17MdnRSVva");
+        executeRoleConfig_moreRoles();
+
+        PrivilegeSetVO privilegeSet = blockchainService.getRolePrivileges(ledgerHash,"MANAGER0");
+        List<TransactionPermission> transactionPermissionList = privilegeSet.getTransactionPrivilege().getPrivilege();
         UserPrivilege userPrivilege = blockchainService.getUserPrivileges(ledgerHash,"LdeNwH71wxtbf1UM8ExRG8qbPnu17MdnRSVva");
+        RoleSet roleSet = blockchainService.getUserRoles(ledgerHash,"LdeNwH71wxtbf1UM8ExRG8qbPnu17MdnRSVva");
+        System.out.println("test done.");
     }
 }
