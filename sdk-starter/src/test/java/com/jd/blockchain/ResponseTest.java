@@ -13,8 +13,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.jd.blockchain.contract.SDKDemo_Constant.GW_PASSWORD;
-
 public class ResponseTest extends SDKTest {
     private String invalid_GW_PUB_KEY = "3snPdw7i7PnBmpLtTjUt7Lyuo3RpWZzxNtjDsx1rRNi9jc3892N2Uc";
     private String invalid_GW_PRIV_KEY = "177gjxbtF999qv654gxRHwqvbibbwtNb2LknLvmsRVTDKt4MJehZE3me63r9uxpANjMEHGC";
