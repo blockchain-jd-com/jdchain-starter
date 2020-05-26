@@ -477,7 +477,6 @@ public class SDKTest extends SDK_Base_Demo {
         this.registerUserTest();
         this.insertData();
         this.executeContractOK();
-
     }
 
     //5.使用相同的用户注册;
@@ -487,6 +486,7 @@ public class SDKTest extends SDK_Base_Demo {
                 "DAc48C8t1V1UJk6ZvNQYXzEPbHgG3H8eTzGBNtZZMNPC");
         PubKey pubKey = KeyGenUtils.decodePubKey("3snPdw7i7Pij7VXCkq7soCgAHSx5zS8S8vNdiV8DEkJ76eWKNd3sdd");
         BlockchainKeypair newUser = new BlockchainKeypair(pubKey, privKey);
+        System.out.println("address="+newUser.getAddress());
         this.registerUser(null, newUser);
     }
 
