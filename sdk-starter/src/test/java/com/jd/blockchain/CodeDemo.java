@@ -5,6 +5,7 @@ import com.jd.blockchain.ledger.BlockchainIdentity;
 import com.jd.blockchain.ledger.BlockchainKeyGenerator;
 import com.jd.blockchain.ledger.BlockchainKeypair;
 import com.jd.blockchain.ledger.BytesValue;
+import com.jd.blockchain.ledger.BytesValueEncoding;
 import com.jd.blockchain.ledger.ContractCodeDeployOperation;
 import com.jd.blockchain.ledger.ContractEventSendOperation;
 import com.jd.blockchain.ledger.DataAccountKVSetOperation;
@@ -15,6 +16,7 @@ import com.jd.blockchain.ledger.LedgerInitOperation;
 import com.jd.blockchain.ledger.LedgerInitSetting;
 import com.jd.blockchain.ledger.LedgerTransaction;
 import com.jd.blockchain.ledger.Operation;
+import com.jd.blockchain.ledger.OperationResult;
 import com.jd.blockchain.ledger.ParticipantNode;
 import com.jd.blockchain.ledger.PreparedTransaction;
 import com.jd.blockchain.ledger.Transaction;
@@ -26,7 +28,10 @@ import com.jd.blockchain.ledger.UserRegisterOperation;
 import com.jd.blockchain.sdk.BlockchainService;
 import com.jd.blockchain.sdk.client.GatewayServiceFactory;
 import com.jd.blockchain.sdk.converters.ClientResolveUtil;
+import com.jd.blockchain.transaction.ContractReturnValue;
+import com.jd.blockchain.transaction.GenericValueHolder;
 import com.jd.blockchain.utils.io.FileUtils;
+import com.jd.chain.contract.TransferContract;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.Base64Utils;
@@ -242,39 +247,42 @@ public class CodeDemo {
     }
 
     @Test
-//    public void execContract(){
-//// 创建服务代理；
-//        BlockchainService service = serviceFactory.getBlockchainService();
-//
-//        // 在本地定义TX模板
-//        TransactionTemplate txTemp = service.newTransaction(ledgerHash);
-//
-//        // 合约地址
-//        String contractAddressBase58 = "";
-//
-//        // 使用接口方式调用合约
-//        TransferContract transferContract = txTemp.contract(contractAddress, TransferContract.class);
-//
-//        // 使用decode方式调用合约内部方法（create方法）
-//        // 返回GenericValueHolder可通过get方法获取结果，但get方法需要在commit调用后执行
-//        GenericValueHolder<String> result = ContractReturnValue.decode(transferContract.create(address, account, money));
-//
-//        PreparedTransaction ptx = txTpl.prepare();
-//
-//        ptx.sign(adminKey);
-//
-//        TransactionResponse transactionResponse = ptx.commit();
-//
-//        String cotractExecResult = result.get();
-//
-//        // TransactionResponse也提供了可供查询结果的接口
-//        OperationResult[] operationResults = transactionResponse.getOperationResults();
-//
-//        // 通过OperationResult获取结果
-//        for (int i = 0; i < operationResults.length; i++) {
-//            OperationResult opResult = operationResults[i];
-//            System.out.printf("Operation[%s].result = %s \r\n",
-//                    opResult.getIndex(), BytesValueEncoding.decode(opResult.getResult()));
-//        }
-//    }
+    public void execContract(){
+        // 创建服务代理；
+        BlockchainService service = serviceFactory.getBlockchainService();
+
+        // 在本地定义TX模板
+        TransactionTemplate txTemp = service.newTransaction(ledgerHash);
+
+        // 合约地址
+        String contractAddress = "";
+
+        // 使用接口方式调用合约
+        TransferContract transferContract = txTemp.contract(contractAddress, TransferContract.class);
+
+        // 使用decode方式调用合约内部方法（create方法）
+        // 返回GenericValueHolder可通过get方法获取结果，但get方法需要在commit调用后执行
+        String address = "address";
+        String account = "fill account";
+        long money = 100000000L;
+        GenericValueHolder<String> result = ContractReturnValue.decode(transferContract.create(address, account, money));
+
+        PreparedTransaction ptx = txTemp.prepare();
+
+        ptx.sign(CLIENT_CERT);
+
+        TransactionResponse transactionResponse = ptx.commit();
+
+        String cotractExecResult = result.get();
+
+        // TransactionResponse也提供了可供查询结果的接口
+        OperationResult[] operationResults = transactionResponse.getOperationResults();
+
+        // 通过OperationResult获取结果
+        for (int i = 0; i < operationResults.length; i++) {
+            OperationResult opResult = operationResults[i];
+            System.out.printf("Operation[%s].result = %s \r\n",
+                    opResult.getIndex(), BytesValueEncoding.decode(opResult.getResult()));
+        }
+    }
 }

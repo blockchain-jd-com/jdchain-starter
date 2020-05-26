@@ -2,7 +2,16 @@ package com.jd.blockchain.contract;
 
 import com.jd.blockchain.binaryproto.BinaryProtocol;
 import com.jd.blockchain.crypto.HashDigest;
-import com.jd.blockchain.ledger.*;
+import com.jd.blockchain.ledger.BlockchainIdentity;
+import com.jd.blockchain.ledger.BlockchainKeyGenerator;
+import com.jd.blockchain.ledger.BlockchainKeypair;
+import com.jd.blockchain.ledger.BytesValueEncoding;
+import com.jd.blockchain.ledger.DigitalSignature;
+import com.jd.blockchain.ledger.OperationResult;
+import com.jd.blockchain.ledger.PreparedTransaction;
+import com.jd.blockchain.ledger.TransactionContent;
+import com.jd.blockchain.ledger.TransactionResponse;
+import com.jd.blockchain.ledger.TransactionTemplate;
 import com.jd.blockchain.sdk.BlockchainService;
 import com.jd.blockchain.sdk.client.GatewayServiceFactory;
 import com.jd.blockchain.transaction.GenericValueHolder;
