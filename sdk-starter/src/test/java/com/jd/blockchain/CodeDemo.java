@@ -19,15 +19,21 @@ import com.jd.blockchain.ledger.ParticipantNode;
 import com.jd.blockchain.ledger.PreparedTransaction;
 import com.jd.blockchain.ledger.Transaction;
 import com.jd.blockchain.ledger.TransactionContent;
+import com.jd.blockchain.ledger.TransactionResponse;
 import com.jd.blockchain.ledger.TransactionTemplate;
 import com.jd.blockchain.ledger.TypedKVEntry;
 import com.jd.blockchain.ledger.UserRegisterOperation;
 import com.jd.blockchain.sdk.BlockchainService;
 import com.jd.blockchain.sdk.client.GatewayServiceFactory;
 import com.jd.blockchain.sdk.converters.ClientResolveUtil;
+import com.jd.blockchain.utils.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.Base64Utils;
+
+import java.io.File;
+
+import static org.junit.Assert.assertTrue;
 
 public class CodeDemo {
     BlockchainKeypair CLIENT_CERT;
@@ -202,4 +208,73 @@ public class CodeDemo {
             }
         }
     }
+
+    @Test
+    public void deployContract(){
+        // 创建服务代理；
+        BlockchainService service = serviceFactory.getBlockchainService();
+
+        // 在本地定义TX模板
+        TransactionTemplate txTemp = service.newTransaction(ledgerHash);
+
+        // 合约内容读取
+        byte[] contractBytes = FileUtils.readBytes(new File("CONTRACT_FILE"));
+
+        // 生成用户
+        BlockchainKeypair contractKeyPair = BlockchainKeyGenerator.getInstance().generate();
+
+        // 发布合约
+        txTemp.contracts().deploy(contractKeyPair.getIdentity(), contractBytes);
+
+        // TX 准备就绪；
+        PreparedTransaction prepTx = txTemp.prepare();
+
+        // 使用私钥进行签名；
+        prepTx.sign(CLIENT_CERT);
+
+        // 提交交易；
+        TransactionResponse transactionResponse = prepTx.commit();
+
+        assertTrue(transactionResponse.isSuccess());
+
+        // 打印合约地址
+        System.out.println(contractKeyPair.getIdentity().getAddress().toBase58());
+    }
+
+    @Test
+//    public void execContract(){
+//// 创建服务代理；
+//        BlockchainService service = serviceFactory.getBlockchainService();
+//
+//        // 在本地定义TX模板
+//        TransactionTemplate txTemp = service.newTransaction(ledgerHash);
+//
+//        // 合约地址
+//        String contractAddressBase58 = "";
+//
+//        // 使用接口方式调用合约
+//        TransferContract transferContract = txTemp.contract(contractAddress, TransferContract.class);
+//
+//        // 使用decode方式调用合约内部方法（create方法）
+//        // 返回GenericValueHolder可通过get方法获取结果，但get方法需要在commit调用后执行
+//        GenericValueHolder<String> result = ContractReturnValue.decode(transferContract.create(address, account, money));
+//
+//        PreparedTransaction ptx = txTpl.prepare();
+//
+//        ptx.sign(adminKey);
+//
+//        TransactionResponse transactionResponse = ptx.commit();
+//
+//        String cotractExecResult = result.get();
+//
+//        // TransactionResponse也提供了可供查询结果的接口
+//        OperationResult[] operationResults = transactionResponse.getOperationResults();
+//
+//        // 通过OperationResult获取结果
+//        for (int i = 0; i < operationResults.length; i++) {
+//            OperationResult opResult = operationResults[i];
+//            System.out.printf("Operation[%s].result = %s \r\n",
+//                    opResult.getIndex(), BytesValueEncoding.decode(opResult.getResult()));
+//        }
+//    }
 }

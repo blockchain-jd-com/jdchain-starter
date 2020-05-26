@@ -37,6 +37,12 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>ledger-model</artifactId>
+            <version>1.3.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>com.jd.blockchain</groupId>-->
             <!--<artifactId>crypto-pki</artifactId>-->
