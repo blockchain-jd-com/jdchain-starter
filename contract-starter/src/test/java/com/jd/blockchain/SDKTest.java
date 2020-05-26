@@ -259,14 +259,6 @@ public class SDKTest extends SDK_Base_Demo {
         return result.get();
     }
 
-    /**
-     * 生成一个区块链用户，并注册到区块链；
-     */
-    @Test
-    public void registerUserTest() {
-        this.registerUser();
-    }
-
     @Test
     public void rigisterUserMore() {
         for (int i = 0; i < 15; i++) {
@@ -496,5 +488,22 @@ public class SDKTest extends SDK_Base_Demo {
         PubKey pubKey = KeyGenUtils.decodePubKey("3snPdw7i7Pij7VXCkq7soCgAHSx5zS8S8vNdiV8DEkJ76eWKNd3sdd");
         BlockchainKeypair newUser = new BlockchainKeypair(pubKey, privKey);
         this.registerUser(null, newUser);
+    }
+
+    /**
+     * 生成一个区块链用户，并注册到区块链；
+     */
+    @Test
+    public void registerUserTest() {
+        this.registerUser();
+    }
+
+    /**
+     * 执行有毒合约;
+     */
+    @Test
+    public void executeNoxiousContract() {
+//        BlockchainKeypair contractDeployKey = BlockchainKeyGenerator.getInstance().generate();
+        this.contractHandle2("NoxContract.jar",null,null,true,true);
     }
 }

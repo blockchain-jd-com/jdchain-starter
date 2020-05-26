@@ -2,13 +2,22 @@ package com.jd.blockchain.contract;
 
 import com.jd.blockchain.binaryproto.BinaryProtocol;
 import com.jd.blockchain.crypto.HashDigest;
-import com.jd.blockchain.ledger.*;
+import com.jd.blockchain.ledger.BlockchainKeyGenerator;
+import com.jd.blockchain.ledger.BlockchainKeypair;
+import com.jd.blockchain.ledger.BytesValueEncoding;
+import com.jd.blockchain.ledger.DigitalSignature;
+import com.jd.blockchain.ledger.OperationResult;
+import com.jd.blockchain.ledger.PreparedTransaction;
+import com.jd.blockchain.ledger.TransactionContent;
+import com.jd.blockchain.ledger.TransactionResponse;
+import com.jd.blockchain.ledger.TransactionTemplate;
 import com.jd.blockchain.sdk.BlockchainService;
 import com.jd.blockchain.sdk.client.GatewayServiceFactory;
 import com.jd.blockchain.transaction.GenericValueHolder;
 import com.jd.blockchain.transaction.SignatureUtils;
 import com.jd.blockchain.utils.Bytes;
 import com.jd.chain.contract.Guanghu;
+import com.jd.chain.contract.MyContract;
 
 import static com.jd.blockchain.contract.SDKDemo_Constant.peer1Key;
 import static com.jd.blockchain.contract.SDKDemo_Constant.readChainCodes;
@@ -256,6 +265,57 @@ public abstract class SDK_Base_Demo {
         // 使用合约创建
         Guanghu guanghu = txTpl.contract(contractAddress, Guanghu.class);
         GenericValueHolder<String> result = decode(guanghu.putval(address, account, content));
+        commit(txTpl,useCommitA);
+        return result.get();
+    }
+
+    public void contractHandle2(String contractZipName, BlockchainKeypair signAdminKey, BlockchainKeypair contractDeployKey,
+                               boolean isDeploy, boolean isExecute) {
+        if(contractZipName == null){
+            contractZipName = "contract-JDChain-Contract.jar";
+        }
+        // 发布jar包
+        // 定义交易模板
+        TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
+        Bytes contractAddress = null;
+        if(isDeploy){
+            // 将jar包转换为二进制数据
+            byte[] contractCode = readChainCodes(contractZipName);
+
+            // 生成一个合约账号
+            if(contractDeployKey == null){
+                contractDeployKey = BlockchainKeyGenerator.getInstance().generate();
+            }
+            contractAddress = contractDeployKey.getAddress();
+            System.out.println("contract's address=" + contractAddress);
+
+            // 生成发布合约操作
+            txTpl.contracts().deploy(contractDeployKey.getIdentity(), contractCode);
+
+            // 生成预发布交易；
+            commit(txTpl,signAdminKey,useCommitA);
+        }
+
+        if(isExecute){
+            // 注册一个数据账户
+            BlockchainKeypair dataAccount = createDataAccount();
+            // 获取数据账户地址x
+            String dataAddress = dataAccount.getAddress().toBase58();
+            // 打印数据账户地址
+            System.out.printf("DataAccountAddress = %s \r\n", dataAddress);
+
+            // 创建两个账号：
+            String account0 = "jd_zhangsan";
+            String content = "{\"dest\":\"KA006\",\"id\":\"cc-fin08-01\",\"items\":\"FIN001|3030\",\"source\":\"FIN001\"}";
+            System.out.println("return value = "+create2(dataAddress, account0, content, contractAddress));
+        }
+    }
+
+    public String create2(String address, String account, String content, Bytes contractAddress) {
+        TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
+        // 使用合约创建
+        MyContract guanghu = txTpl.contract(contractAddress, MyContract.class);
+        GenericValueHolder<String> result = decode(guanghu.put(address, account, content, 1L));
         commit(txTpl,useCommitA);
         return result.get();
     }
