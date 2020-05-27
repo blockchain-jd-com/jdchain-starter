@@ -24,11 +24,6 @@
         </dependency>
         <dependency>
             <groupId>com.jd.blockchain</groupId>
-            <artifactId>ledger-model</artifactId>
-            <version>${ledger.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.jd.blockchain</groupId>
             <artifactId>contract-starter</artifactId>
             <version>${ledger.version}</version>
         </dependency>
