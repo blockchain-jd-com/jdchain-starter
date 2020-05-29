@@ -12,7 +12,7 @@
     <artifactId>contract-compile</artifactId>
 
     <properties>
-        <mainClass>contract.service.impl.QANVUVVEIBR2ContractImplQANVUVVEIBR2ContractImplQANVUVVEIBR2ContractImplQANVUVVEIBR2ContractImpl</mainClass>
+        <mainClass>com.jd.chain.contract.GuanghuImpl</mainClass>
         <!--<mvnHome>E:\apache-maven-3.5.0\</mvnHome>-->
     </properties>
 

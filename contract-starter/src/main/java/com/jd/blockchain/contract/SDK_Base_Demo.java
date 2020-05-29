@@ -32,6 +32,8 @@ public abstract class SDK_Base_Demo {
 
     protected BlockchainService blockchainService;
 
+    protected HashDigest contentHash;
+
     public SDK_Base_Demo() {
         init();
     }
@@ -122,6 +124,7 @@ public abstract class SDK_Base_Demo {
                     transactionResponse.getBlockHeight(),
                     transactionResponse.getContentHash(), transactionResponse.getExecutionState().toString()));
         }
+        contentHash = transactionResponse.getContentHash();
         return transactionResponse;
     }
 

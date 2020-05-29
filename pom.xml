@@ -15,7 +15,7 @@
 
     <properties>
         <!--<contract.version>1.0.1.RELEASE</contract.version>-->
-        <ledger.version>1.1.5-SNAPSHOT</ledger.version>
+        <ledger.version>1.1.5.RELEASE</ledger.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <log4j.version>2.11.1</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
@@ -29,7 +29,7 @@
             <dependency>
                 <groupId>com.jd.blockchain</groupId>
                 <artifactId>sdk-pack</artifactId>
-                <version>1.1.5-SNAPSHOT</version>
+                <version>1.1.5.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

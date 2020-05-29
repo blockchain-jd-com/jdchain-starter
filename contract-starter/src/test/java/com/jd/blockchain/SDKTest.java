@@ -4,12 +4,14 @@ import com.jd.blockchain.contract.SDK_Base_Demo;
 import com.jd.blockchain.crypto.*;
 import com.jd.blockchain.ledger.*;
 import com.jd.blockchain.sdk.converters.ClientResolveUtil;
+import com.jd.blockchain.transaction.ContractReturnValue;
 import com.jd.blockchain.transaction.GenericValueHolder;
 import com.jd.blockchain.utils.Bytes;
 import com.jd.blockchain.utils.codec.Base58Utils;
 import com.jd.blockchain.utils.io.ByteArray;
 import com.jd.blockchain.utils.security.ShaUtils;
 import com.jd.chain.contract.Guanghu;
+import com.jd.chain.contract.StudyContract;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -496,6 +498,9 @@ public class SDKTest extends SDK_Base_Demo {
     @Test
     public void registerUserTest() {
         this.registerUser();
+        LedgerTransaction ledgerTransaction = blockchainService.getTransactionByContentHash(ledgerHash,contentHash);
+        System.out.println(ledgerTransaction.toString());
+
     }
 
     /**
@@ -505,5 +510,33 @@ public class SDKTest extends SDK_Base_Demo {
     public void executeNoxiousContract() {
 //        BlockchainKeypair contractDeployKey = BlockchainKeyGenerator.getInstance().generate();
         this.contractHandle2("NoxContract.jar",null,null,true,true);
+    }
+
+    @Test
+    public void test1(){
+        this.contractHandle(null,null,null,true,false);
+    }
+    @Test
+    public void testStudyContractCreate() {
+        HashDigest[] ledgerHashs = blockchainService.getLedgerHashs();
+        TransactionTemplate transactionTemplate = blockchainService.newTransaction(ledgerHashs[0]);
+
+        //合约地址，从浏览器中查到的http://jdchain-cloud7-8080.jdfmgt.com/#/contract
+//        String contarctAddress = ContractTypeQiYe.STUDY_CONTRACT.getAddress();
+        String contarctAddress = "LdeNfn6ice2SrX1zR4ksgzejpn5u2uDQoCHXh";
+        String DATA_ACCOUNT_ADDRESS = "LdeNm3FpN8JXXsHccCF6BsmfbkJZTdNXy7p1E";
+
+        //使用接口的方式调用合约
+        StudyContract studyContract = transactionTemplate.contract(contarctAddress, StudyContract.class);
+        //使用decode的方法调用StudyContract合约中的方法，例如create，modify等方法
+        //用peterResult来接收studyContract.create(DATA_ACCOUNT_ADDRESS, "Peter", 100)执行的结果
+        GenericValueHolder<String> peterResult = ContractReturnValue.decode(studyContract.create(DATA_ACCOUNT_ADDRESS, "Rose", 50));
+        PreparedTransaction preparedTransaction = transactionTemplate.prepare();
+        preparedTransaction.sign(adminKey);
+        TransactionResponse commit = preparedTransaction.commit();
+        TransactionState executionState = commit.getExecutionState();
+        System.out.println("1:" + executionState);
+        //可以利用peterResult.get()来得到合约执行的结果，注意必须在commit()后才能调用get()方法。
+        System.out.println("2:" + peterResult.get());
     }
 }
