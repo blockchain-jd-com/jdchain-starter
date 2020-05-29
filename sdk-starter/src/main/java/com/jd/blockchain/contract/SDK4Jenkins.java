@@ -20,8 +20,8 @@ public class SDK4Jenkins extends SDK_Base_Demo {
         //update the params;
         GW_IPADDR = args[0];
         GW_PORT = Integer.parseInt(args[1]);
-        GW_PUB_KEY = args[2];
-        GW_PRIV_KEY = args[3];
+        GW_PUB_KEY[0] = args[2];
+        GW_PRIV_KEY[0] = args[3];
         GW_PASSWORD = args[4];
         System.out.println(String.format("GW_IPADDR=%s,port=%d,pub-key=%s, priv-key=%s, password=%s",
                 GW_IPADDR,GW_PORT,GW_PUB_KEY,GW_PRIV_KEY,GW_PASSWORD));

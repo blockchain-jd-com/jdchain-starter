@@ -13,14 +13,14 @@ import java.io.InputStream;
 public class SDKDemo_Constant {
 
     //localhost
-    public static  String GW_IPADDR = "jdchain-cloud7-8080.jdfmgt.com";
-    public static  int GW_PORT = 80;
-    public static String GW_PUB_KEY[] = {"3snPdw7i7Pd3CdgAyFyNKaAEYGkBpEtMKPvpCCJWgX9dDx6KcEDeKj",
-            "3snPdw7i7PajLB35tEau1kmixc6ZrjLXgxwKbkv5bHhP7nT5dhD9eX"};
-    public static String GW_PRIV_KEY[] = {"177gjyRVfUgdN5UiXA2YDu53cMwxiXkFbLdhCQCe7wyt59SBxcVKyg9qP3CDRyoTFgYLP7y",
-            "177gju9p5zrNdHJVEQnEEKF4ZjDDYmAXyfG84V5RPGVc5xFfmtwnHA7j51nyNLUFffzz5UT"};
-    public static String GW_PASSWORD = "AXhhKihAa2LaRwY5mftnngSPKDF4N9JignnQ4skynY8y";
-    public static String GW_PASSWORD_PEER1 = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
+//    public static  String GW_IPADDR = "jdchain-cloud7-8080.jdfmgt.com";
+//    public static  int GW_PORT = 80;
+//    public static String GW_PUB_KEY[] = {"3snPdw7i7Pd3CdgAyFyNKaAEYGkBpEtMKPvpCCJWgX9dDx6KcEDeKj",
+//            "3snPdw7i7PajLB35tEau1kmixc6ZrjLXgxwKbkv5bHhP7nT5dhD9eX"};
+//    public static String GW_PRIV_KEY[] = {"177gjyRVfUgdN5UiXA2YDu53cMwxiXkFbLdhCQCe7wyt59SBxcVKyg9qP3CDRyoTFgYLP7y",
+//            "177gju9p5zrNdHJVEQnEEKF4ZjDDYmAXyfG84V5RPGVc5xFfmtwnHA7j51nyNLUFffzz5UT"};
+//    public static String GW_PASSWORD = "AXhhKihAa2LaRwY5mftnngSPKDF4N9JignnQ4skynY8y";
+//    public static String GW_PASSWORD_PEER1 = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
 
     //another server;
 //    public static String GW_IPADDR = "jdchain-cloud0-8080.jdfmgt.com";
@@ -32,14 +32,14 @@ public class SDKDemo_Constant {
 //    public static String GW_PASSWORD = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
 //    public static String GW_PASSWORD_PEER1 = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
 
-//    public static String GW_IPADDR = "jdchain2-18081.jd.com";
-//    public static int GW_PORT = 80;
-//    public static String GW_PUB_KEY[] = {"3snPdw7i7PXVXYjsBDQAjyExMjVLEVNYViK8fkTfexjqbxqsWgZVGX",
-//        "3snPdw7i7Pf8eJ1uycdAM6spw7XjbST7m39MZbD9qdL4QEzoBAwLKh"};
-//    public static String GW_PRIV_KEY[] = {"177gjufK1ZNFncmgdCwGYs6cnyeu8HoG6wsc2XKesGEGxfTrPYqYWi2GfRE55SAxvtY4KbJ",
-//            "177gjyFk3VDzfExR1a5NxHvSGqS9FJ2aNAaqMgNyTUrRguMA9jN6Bp3vasUB7wXr1cqcDdj"};
-//    public static String GW_PASSWORD = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
-//    public static String GW_PASSWORD_PEER1 = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
+    public static String GW_IPADDR = "jdchain2-18081.jd.com";
+    public static int GW_PORT = 80;
+    public static String GW_PUB_KEY[] = {"3snPdw7i7PXVXYjsBDQAjyExMjVLEVNYViK8fkTfexjqbxqsWgZVGX",
+        "3snPdw7i7Pf8eJ1uycdAM6spw7XjbST7m39MZbD9qdL4QEzoBAwLKh"};
+    public static String GW_PRIV_KEY[] = {"177gjufK1ZNFncmgdCwGYs6cnyeu8HoG6wsc2XKesGEGxfTrPYqYWi2GfRE55SAxvtY4KbJ",
+            "177gjyFk3VDzfExR1a5NxHvSGqS9FJ2aNAaqMgNyTUrRguMA9jN6Bp3vasUB7wXr1cqcDdj"};
+    public static String GW_PASSWORD = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
+    public static String GW_PASSWORD_PEER1 = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
 
     public static PrivKey gwPrivkey0 = KeyGenUtils.decodePrivKey(GW_PRIV_KEY[0], GW_PASSWORD);
     public static PubKey gwPubKey0 = KeyGenUtils.decodePubKey(GW_PUB_KEY[0]);

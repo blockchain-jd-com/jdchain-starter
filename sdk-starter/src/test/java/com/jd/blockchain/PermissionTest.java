@@ -6,13 +6,13 @@ import com.jd.blockchain.crypto.PrivKey;
 import com.jd.blockchain.crypto.PubKey;
 import com.jd.blockchain.ledger.BlockchainKeypair;
 import com.jd.blockchain.ledger.LedgerPermission;
-import com.jd.blockchain.ledger.PrivilegeSetVO;
+//import com.jd.blockchain.ledger.PrivilegeSetVO;
 import com.jd.blockchain.ledger.RoleSet;
 import com.jd.blockchain.ledger.RolesPolicy;
 import com.jd.blockchain.ledger.TransactionPermission;
 import com.jd.blockchain.ledger.TransactionResponse;
 import com.jd.blockchain.ledger.TransactionTemplate;
-import com.jd.blockchain.ledger.UserPrivilege;
+//import com.jd.blockchain.ledger.UserPrivilege;
 import org.junit.Test;
 
 import java.util.List;
@@ -93,14 +93,13 @@ public class PermissionTest extends SDK_Base_Demo {
         commitA(txTemp,adminKey);
     }
 
-    @Test
-    public void getPrivilege(){
-        executeRoleConfig_moreRoles();
-
-        PrivilegeSetVO privilegeSet = blockchainService.getRolePrivileges(ledgerHash,"MANAGER0");
-        List<TransactionPermission> transactionPermissionList = privilegeSet.getTransactionPrivilege().getPrivilege();
-        UserPrivilege userPrivilege = blockchainService.getUserPrivileges(ledgerHash,"LdeNwH71wxtbf1UM8ExRG8qbPnu17MdnRSVva");
-        RoleSet roleSet = blockchainService.getUserRoles(ledgerHash,"LdeNwH71wxtbf1UM8ExRG8qbPnu17MdnRSVva");
-        System.out.println("test done.");
-    }
+//    @Test
+//    public void getPrivilege(){
+//        executeRoleConfig_moreRoles();
+//        PrivilegeSetVO privilegeSet = blockchainService.getRolePrivileges(ledgerHash,"MANAGER0");
+//        List<TransactionPermission> transactionPermissionList = privilegeSet.getTransactionPrivilege().getPrivilege();
+//        UserPrivilege userPrivilege = blockchainService.getUserPrivileges(ledgerHash,"LdeNwH71wxtbf1UM8ExRG8qbPnu17MdnRSVva");
+//        RoleSet roleSet = blockchainService.getUserRoles(ledgerHash,"LdeNwH71wxtbf1UM8ExRG8qbPnu17MdnRSVva");
+//        System.out.println("test done.");
+//    }
 }
