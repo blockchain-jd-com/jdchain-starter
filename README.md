@@ -9,6 +9,8 @@ The group mail: [jdchain-support@jd.com](jdchain-support@jd.com)
 master与最新的release分支保持一致。其它分支打tag。
 
 #修改说明：
+## 11.版本1.1.0.RELEASE说明
+1）样例基于JDChain1.1.5.RELEASE版本构建;
 
 ## 10.版本1.0.9.RELEASE说明
 1）样例基于JDChain1.2.0.RELEASE版本构建;
