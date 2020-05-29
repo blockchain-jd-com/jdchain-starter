@@ -18,6 +18,15 @@ public interface TransferContract {
     @ContractEvent(name = "readAll")
     String readAll(String address, String account);
 
+    @ContractEvent(name = "putval1")
+    String putval(String address, String account, String content, Long time);
+
+    @ContractEvent(name = "putvalBif")
+    String putvalBifurcation(String address, String account, String content, String isHalf);
+
+    @ContractEvent(name = "getTxSigners")
+    String getTxSigners();
+
     @ContractEvent(name = "test")
     String test();
 }

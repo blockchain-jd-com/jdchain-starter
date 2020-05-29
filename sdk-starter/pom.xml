@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>jdchain-starter</artifactId>
+        <groupId>com.jd.blockchain</groupId>
+        <version>1.0.8.1.RELEASE</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>contract-starter</artifactId>
+
+    <name>contract-starter</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>contract-compile</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>sdk-pack</artifactId>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.jd.blockchain</groupId>-->
+            <!--<artifactId>crypto-pki</artifactId>-->
+            <!--<version>${ledger.version}</version>-->
+        <!--</dependency>-->
+
+    </dependencies>
+
+    <properties>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.0.6.RELEASE</version>
+                <configuration>
+                    <mainClass>com.jd.blockchain.contract.SDK4Jenkins</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
