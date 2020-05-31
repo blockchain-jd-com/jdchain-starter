@@ -694,4 +694,11 @@ public class SDKTest extends SDK_Base_Demo {
 
         System.out.println(getTxSigners(contractAddress));
     }
+
+    @Test
+    public void getContentByContentHash(){
+        this.registerUser();
+        LedgerTransaction ledgerTransactin = blockchainService.getTransactionByContentHash(ledgerHash,contentHash);
+        System.out.println(ledgerTransactin.toString());
+    }
 }
