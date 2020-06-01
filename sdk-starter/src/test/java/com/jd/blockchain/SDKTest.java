@@ -710,6 +710,8 @@ public class SDKTest extends SDK_Base_Demo {
     @Test
     public void deployContract4More_fill_version(){
         ContractParams contractParams = new ContractParams().setContractZipName("contract-compile-1.0.9.RELEASE.car");
+        BlockchainKeypair datakeyPair = this.insertData(null,null);
+        contractParams.setDataAccount(datakeyPair.getIdentity()).setKey("moreVersions-key1").setValue("moreVersions-value1");
         contractParams.setDeploy(true).setExecute(false);
         BlockchainIdentity contractAddress =
                 this.contractHandle(contractParams);

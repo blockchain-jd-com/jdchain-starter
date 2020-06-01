@@ -82,23 +82,26 @@ public class ContractParams {
         return dataAccount;
     }
 
-    public void setDataAccount(BlockchainIdentity dataAccount) {
+    public ContractParams setDataAccount(BlockchainIdentity dataAccount) {
         this.dataAccount = dataAccount;
+        return this;
     }
 
     public String getKey() {
         return key;
     }
 
-    public void setKey(String key) {
+    public ContractParams setKey(String key) {
         this.key = key;
+        return this;
     }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public ContractParams setValue(String value) {
         this.value = value;
+        return this;
     }
 }
