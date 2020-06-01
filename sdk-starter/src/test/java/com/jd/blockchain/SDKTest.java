@@ -3,6 +3,7 @@ package com.jd.blockchain;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jd.blockchain.contract.ContractParams;
 import com.jd.blockchain.contract.SDK_Base_Demo;
 import com.jd.blockchain.crypto.*;
 import com.jd.blockchain.ledger.*;
@@ -693,5 +694,47 @@ public class SDKTest extends SDK_Base_Demo {
         System.out.println("return value = "+create1(contractAddress, dataAddress, key, value));
 
         System.out.println(getTxSigners(contractAddress));
+    }
+
+    @Test
+    public void deployContract4More_no_version(){
+        ContractParams contractParams = new ContractParams();
+        contractParams.setContractZipName("contract-compile-1.0.9.RELEASE.car").setDeploy(true).setExecute(false);
+        BlockchainIdentity contractAddress =
+                this.contractHandle(contractParams);
+        contractParams.setContractIdentity(contractAddress);
+        this.contractHandle(contractParams);
+        this.contractHandle(contractParams.setExecute(true));
+    }
+
+    @Test
+    public void deployContract4More_fill_version(){
+        ContractParams contractParams = new ContractParams();
+        contractParams.setContractZipName("contract-compile-1.0.9.RELEASE.car").setDeploy(true).setExecute(false);
+        BlockchainIdentity contractAddress =
+                this.contractHandle(contractParams);
+
+        contractParams.setContractIdentity(contractAddress);
+        this.contractHandle(contractParams);
+
+        contractParams.setHasVersion(true);
+        ContractInfo contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+        System.out.println("version="+contractInfo.getChainCodeVersion());
+        contractParams.setVersion(contractInfo.getChainCodeVersion());
+        this.contractHandle(contractParams);
+
+        //once again;
+        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+        System.out.println("version="+contractInfo.getChainCodeVersion());
+        contractParams.setVersion(contractInfo.getChainCodeVersion());
+        this.contractHandle(contractParams);
+
+        System.out.println("make exception;");
+        contractParams.setVersion(100L); //error;
+        this.contractHandle(contractParams);
+
+        contractParams.setExecute(true);
+        this.contractHandle(contractParams);
+        this.contractHandle(contractParams);
     }
 }
