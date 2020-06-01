@@ -709,8 +709,8 @@ public class SDKTest extends SDK_Base_Demo {
 
     @Test
     public void deployContract4More_fill_version(){
-        ContractParams contractParams = new ContractParams();
-        contractParams.setContractZipName("contract-compile-1.0.9.RELEASE.car").setDeploy(true).setExecute(false);
+        ContractParams contractParams = new ContractParams().setContractZipName("contract-compile-1.0.9.RELEASE.car");
+        contractParams.setDeploy(true).setExecute(false);
         BlockchainIdentity contractAddress =
                 this.contractHandle(contractParams);
 
@@ -730,11 +730,23 @@ public class SDKTest extends SDK_Base_Demo {
         this.contractHandle(contractParams);
 
         System.out.println("make exception;");
-        contractParams.setVersion(100L); //error;
-        this.contractHandle(contractParams);
+        this.contractHandle(contractParams.setVersion(100L)); //error;
 
-        contractParams.setExecute(true);
-        this.contractHandle(contractParams);
-        this.contractHandle(contractParams);
+        System.out.println("get version1;");
+        this.contractHandle(contractParams.setExecute(true).setHasVersion(false));
+        System.out.println("get version2;");
+        this.contractHandle(contractParams.setDeploy(true).setExecute(false).setHasVersion(false));
+        System.out.println("get version3;");
+        this.contractHandle(contractParams.setDeploy(false).setExecute(true).setHasVersion(false));
+        System.out.println("get version4;");
+        this.contractHandle(contractParams.setDeploy(true).setExecute(true).setHasVersion(false));
+
+        //repeat deploy;
+        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+        System.out.println("is repeat?");
+        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
+                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
+        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
+                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
     }
 }
