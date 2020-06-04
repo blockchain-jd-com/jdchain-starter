@@ -707,48 +707,48 @@ public class SDKTest extends SDK_Base_Demo {
         this.contractHandle(contractParams.setExecute(true));
     }
 
-    @Test
-    public void deployContract4More_fill_version(){
-        ContractParams contractParams = new ContractParams().setContractZipName("contract-compile-1.0.9.RELEASE.car");
-        BlockchainKeypair datakeyPair = this.insertData(null,null);
-        contractParams.setDataAccount(datakeyPair.getIdentity()).setKey("moreVersions-key1").setValue("moreVersions-value1");
-        contractParams.setDeploy(true).setExecute(false);
-        BlockchainIdentity contractAddress =
-                this.contractHandle(contractParams);
-
-        contractParams.setContractIdentity(contractAddress);
-        this.contractHandle(contractParams);
-
-        contractParams.setHasVersion(true);
-        ContractInfo contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
-        System.out.println("version="+contractInfo.getChainCodeVersion());
-        contractParams.setVersion(contractInfo.getChainCodeVersion());
-        this.contractHandle(contractParams);
-
-        //once again;
-        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
-        System.out.println("version="+contractInfo.getChainCodeVersion());
-        contractParams.setVersion(contractInfo.getChainCodeVersion());
-        this.contractHandle(contractParams);
-
-        System.out.println("make exception;");
-        this.contractHandle(contractParams.setVersion(100L)); //error;
-
-        System.out.println("get version1;");
-        this.contractHandle(contractParams.setExecute(true).setHasVersion(false));
-        System.out.println("get version2;");
-        this.contractHandle(contractParams.setDeploy(true).setExecute(false).setHasVersion(false));
-        System.out.println("get version3;");
-        this.contractHandle(contractParams.setDeploy(false).setExecute(true).setHasVersion(false));
-        System.out.println("get version4;");
-        this.contractHandle(contractParams.setDeploy(true).setExecute(true).setHasVersion(false));
-
-        //repeat deploy;
-        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
-        System.out.println("is repeat?");
-        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
-                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
-        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
-                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
-    }
+//    @Test
+//    public void deployContract4More_fill_version(){
+//        ContractParams contractParams = new ContractParams().setContractZipName("contract-compile-1.0.9.RELEASE.car");
+//        BlockchainKeypair datakeyPair = this.insertData(null,null);
+//        contractParams.setDataAccount(datakeyPair.getIdentity()).setKey("moreVersions-key1").setValue("moreVersions-value1");
+//        contractParams.setDeploy(true).setExecute(false);
+//        BlockchainIdentity contractAddress =
+//                this.contractHandle(contractParams);
+//
+//        contractParams.setContractIdentity(contractAddress);
+//        this.contractHandle(contractParams);
+//
+//        contractParams.setHasVersion(true);
+//        ContractInfo contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+//        System.out.println("version="+contractInfo.getChainCodeVersion());
+//        contractParams.setVersion(contractInfo.getChainCodeVersion());
+//        this.contractHandle(contractParams);
+//
+//        //once again;
+//        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+//        System.out.println("version="+contractInfo.getChainCodeVersion());
+//        contractParams.setVersion(contractInfo.getChainCodeVersion());
+//        this.contractHandle(contractParams);
+//
+//        System.out.println("make exception;");
+//        this.contractHandle(contractParams.setVersion(100L)); //error;
+//
+//        System.out.println("get version1;");
+//        this.contractHandle(contractParams.setExecute(true).setHasVersion(false));
+//        System.out.println("get version2;");
+//        this.contractHandle(contractParams.setDeploy(true).setExecute(false).setHasVersion(false));
+//        System.out.println("get version3;");
+//        this.contractHandle(contractParams.setDeploy(false).setExecute(true).setHasVersion(false));
+//        System.out.println("get version4;");
+//        this.contractHandle(contractParams.setDeploy(true).setExecute(true).setHasVersion(false));
+//
+//        //repeat deploy;
+//        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+//        System.out.println("is repeat?");
+//        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
+//                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
+//        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
+//                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
+//    }
 }

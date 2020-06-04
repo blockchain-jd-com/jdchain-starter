@@ -164,8 +164,10 @@ public class TransferContractImpl implements EventProcessingAware, TransferContr
             eventContext.getLedger().dataAccount(address).setText(account,content,currVersion);
         }
 
-        return String.format("contract's version=[%d], DataAccountAddress[%s] -> Create(By Contract Operation) key = %s and value = %s  and time= %d Success!!! \r\n",
-                eventContext.getVersion(), address, account, content, time);
+//        return String.format("contract's version=[%d], DataAccountAddress[%s] -> Create(By Contract Operation) key = %s and value = %s  and time= %d Success!!! \r\n",
+//                eventContext.getVersion(), address, account, content, time);
+        return String.format("DataAccountAddress[%s] -> Create(By Contract Operation) key = %s and value = %s  and time= %d Success!!! \r\n",
+                address, account, content, time);
     }
 
     @Override
