@@ -310,7 +310,7 @@ public abstract class SDK_Base_Demo {
 
             // 生成发布合约操作
             if(contractParams.isHasVersion()){
-                txTpl.contracts().deploy(contractParams.contractIdentity, contractCode, contractParams.version);
+//                txTpl.contracts().deploy(contractParams.contractIdentity, contractCode, contractParams.version);
             } else {
                 txTpl.contracts().deploy(contractParams.contractIdentity, contractCode);
             }

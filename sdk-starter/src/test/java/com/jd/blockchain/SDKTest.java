@@ -14,6 +14,7 @@ import com.jd.blockchain.utils.codec.Base58Utils;
 import com.jd.blockchain.utils.io.ByteArray;
 import com.jd.blockchain.utils.security.ShaUtils;
 import com.jd.chain.contract.TransferContract;
+import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,6 +23,7 @@ import org.junit.Test;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import static com.jd.blockchain.contract.SDKDemo_Constant.readChainCodes;
 import static com.jd.blockchain.transaction.ContractReturnValue.decode;
@@ -708,47 +710,55 @@ public class SDKTest extends SDK_Base_Demo {
     }
 
     @Test
-    public void deployContract4More_fill_version(){
-        ContractParams contractParams = new ContractParams().setContractZipName("contract-compile-1.0.9.RELEASE.car");
-        BlockchainKeypair datakeyPair = this.insertData(null,null);
-        contractParams.setDataAccount(datakeyPair.getIdentity()).setKey("moreVersions-key1").setValue("moreVersions-value1");
-        contractParams.setDeploy(true).setExecute(false);
-        BlockchainIdentity contractAddress =
-                this.contractHandle(contractParams);
-
-        contractParams.setContractIdentity(contractAddress);
-        this.contractHandle(contractParams);
-
-        contractParams.setHasVersion(true);
-        ContractInfo contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
-        System.out.println("version="+contractInfo.getChainCodeVersion());
-        contractParams.setVersion(contractInfo.getChainCodeVersion());
-        this.contractHandle(contractParams);
-
-        //once again;
-        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
-        System.out.println("version="+contractInfo.getChainCodeVersion());
-        contractParams.setVersion(contractInfo.getChainCodeVersion());
-        this.contractHandle(contractParams);
-
-        System.out.println("make exception;");
-        this.contractHandle(contractParams.setVersion(100L)); //error;
-
-        System.out.println("get version1;");
-        this.contractHandle(contractParams.setExecute(true).setHasVersion(false));
-        System.out.println("get version2;");
-        this.contractHandle(contractParams.setDeploy(true).setExecute(false).setHasVersion(false));
-        System.out.println("get version3;");
-        this.contractHandle(contractParams.setDeploy(false).setExecute(true).setHasVersion(false));
-        System.out.println("get version4;");
-        this.contractHandle(contractParams.setDeploy(true).setExecute(true).setHasVersion(false));
-
-        //repeat deploy;
-        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
-        System.out.println("is repeat?");
-        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
-                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
-        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
-                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
+    public void insertDataBase(){
+        byte[] arr = new byte[1024];
+        new Random().nextBytes(arr);
+        String value = Base64.encodeBase64String(arr);
+        this.insertData(null,null,"key1",value,-1);
     }
+
+//    @Test
+//    public void deployContract4More_fill_version(){
+//        ContractParams contractParams = new ContractParams().setContractZipName("contract-compile-1.0.9.RELEASE.car");
+//        BlockchainKeypair datakeyPair = this.insertData(null,null);
+//        contractParams.setDataAccount(datakeyPair.getIdentity()).setKey("moreVersions-key1").setValue("moreVersions-value1");
+//        contractParams.setDeploy(true).setExecute(false);
+//        BlockchainIdentity contractAddress =
+//                this.contractHandle(contractParams);
+//
+//        contractParams.setContractIdentity(contractAddress);
+//        this.contractHandle(contractParams);
+//
+//        contractParams.setHasVersion(true);
+//        ContractInfo contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+//        System.out.println("version="+contractInfo.getChainCodeVersion());
+//        contractParams.setVersion(contractInfo.getChainCodeVersion());
+//        this.contractHandle(contractParams);
+//
+//        //once again;
+//        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+//        System.out.println("version="+contractInfo.getChainCodeVersion());
+//        contractParams.setVersion(contractInfo.getChainCodeVersion());
+//        this.contractHandle(contractParams);
+//
+//        System.out.println("make exception;");
+//        this.contractHandle(contractParams.setVersion(100L)); //error;
+//
+//        System.out.println("get version1;");
+//        this.contractHandle(contractParams.setExecute(true).setHasVersion(false));
+//        System.out.println("get version2;");
+//        this.contractHandle(contractParams.setDeploy(true).setExecute(false).setHasVersion(false));
+//        System.out.println("get version3;");
+//        this.contractHandle(contractParams.setDeploy(false).setExecute(true).setHasVersion(false));
+//        System.out.println("get version4;");
+//        this.contractHandle(contractParams.setDeploy(true).setExecute(true).setHasVersion(false));
+//
+//        //repeat deploy;
+//        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+//        System.out.println("is repeat?");
+//        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
+//                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
+//        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
+//                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
+//    }
 }
