@@ -18,6 +18,8 @@ import org.bouncycastle.util.encoders.Hex;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -31,6 +33,7 @@ import static com.jd.blockchain.transaction.ContractReturnValue.decode;
  * date 2019/8/8 10:43
  */
 public class SDKTest extends SDK_Base_Demo {
+    private static Logger logger = LoggerFactory.getLogger(SDKTest.class);
     //because it need to connect the web, so make the switch;
     public boolean isTest = true;
     private String strDataAccount;
@@ -699,7 +702,7 @@ public class SDKTest extends SDK_Base_Demo {
     @Test
     public void deployContract4More_no_version(){
         ContractParams contractParams = new ContractParams();
-        contractParams.setContractZipName("contract-compile-1.0.9.RELEASE.car").setDeploy(true).setExecute(false);
+        contractParams.setContractZipName("contract-compile-1.3.0-SNAPSHOT.car").setDeploy(true).setExecute(false);
         BlockchainIdentity contractAddress =
                 this.contractHandle(contractParams);
         contractParams.setContractIdentity(contractAddress);
@@ -751,4 +754,22 @@ public class SDKTest extends SDK_Base_Demo {
 //        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
 //                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
 //    }
+
+    @Test
+    public void testGetDataAccount() {
+        HashDigest[] ledgerHashs = blockchainService.getLedgerHashs();
+        // BlockchainIdentity not_exist_address = gwService.getDataAccount(ledgerHashs[0], "Not_exist_address");
+        //正确的地址是：LdeNhEPAyaFX8FrDAfgnbcV2zSwqWoCfQM2gi
+        try {
+            BlockchainIdentity not_exist_address = blockchainService.getDataAccount(ledgerHashs[0], "LdeNhEPAyaFX8FrDAfgnbcV2zSwqWoCfQM2ga");
+            if (not_exist_address == null) {
+                logger.info("not_exist_address == null");
+            } else {
+                logger.info("The address is: " + not_exist_address.getAddress().toBase58());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+        }
+    }
 }
