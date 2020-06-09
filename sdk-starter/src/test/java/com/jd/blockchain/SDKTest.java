@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -312,14 +313,6 @@ public class SDKTest extends SDK_Base_Demo {
         return result.get();
     }
 
-    /**
-     * 生成一个区块链用户，并注册到区块链；
-     */
-    @Test
-    public void registerUserTest() {
-        this.registerUser();
-    }
-
     @Test
     public void rigisterUserMore() {
         for (int i = 0; i < 15; i++) {
@@ -511,6 +504,35 @@ public class SDKTest extends SDK_Base_Demo {
         this.strDataAccount = dataAccount.getAddress().toBase58();
         System.out.println("current dataAccount=" + dataAccount.getAddress());
         txTemp.dataAccount(dataAccount.getAddress()).setText(key, value, version);
+
+        // TX 准备就绪
+        commit(txTemp,signAdminKey,useCommitA);
+
+        //get the version
+        TypedKVEntry[] kvData = blockchainService.getDataEntries(ledgerHash,
+                dataAccount.getAddress().toBase58(), key);
+        System.out.println(String.format("key1 info:key=%s,value=%s,version=%d",
+                kvData[0].getKey(),kvData[0].getValue().toString(),kvData[0].getVersion()));
+
+        return dataAccount;
+    }
+
+    public BlockchainKeypair insertTimeData(BlockchainKeypair dataAccount, BlockchainKeypair signAdminKey) {
+        if (!isTest) return null;
+        // 在本地定义注册账号的 TX；
+        TransactionTemplate txTemp = blockchainService.newTransaction(ledgerHash);
+        //采用KeyGenerator来生成BlockchainKeypair;
+        if(dataAccount == null){
+            dataAccount = BlockchainKeyGenerator.getInstance().generate();
+            txTemp.dataAccounts().register(dataAccount.getIdentity());
+        }
+
+        this.strDataAccount = dataAccount.getAddress().toBase58();
+        System.out.println("current dataAccount=" + dataAccount.getAddress());
+        String key = "key1";
+        txTemp.dataAccount(dataAccount.getAddress()).setText(key, "value1", -1);
+        Calendar cld = Calendar.getInstance();
+        txTemp.dataAccount(dataAccount.getAddress()).setTimestamp("key2", cld.getTimeInMillis(), -1);
 
         // TX 准备就绪
         commit(txTemp,signAdminKey,useCommitA);
@@ -771,5 +793,19 @@ public class SDKTest extends SDK_Base_Demo {
             e.printStackTrace();
             logger.error(e.getMessage());
         }
+    }
+
+    /**
+     * 生成一个区块链用户，并注册到区块链；
+     */
+    @Test
+    public void registerUserTest() {
+        this.registerUser();
+    }
+
+    @Test
+    public void insertData1(){
+        //timestamp;
+        this.insertTimeData(null,null);
     }
 }

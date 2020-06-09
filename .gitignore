@@ -12,3 +12,8 @@ target
 node_modules
 test/derby.log
 derby.log
+sdk-starter/logs/starter.warn.log
+sdk-starter/logs/starter.temp.log
+sdk-starter/logs/starter.info.log
+sdk-starter/logs/starter.error.log
+sdk-starter/contract.jar

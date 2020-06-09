@@ -4,7 +4,12 @@ import com.jd.blockchain.contract.SDK_Base_Demo;
 import com.jd.blockchain.crypto.KeyGenUtils;
 import com.jd.blockchain.crypto.PrivKey;
 import com.jd.blockchain.crypto.PubKey;
-import com.jd.blockchain.ledger.*;
+import com.jd.blockchain.ledger.BlockchainKeypair;
+import com.jd.blockchain.ledger.LedgerPermission;
+import com.jd.blockchain.ledger.RolesPolicy;
+import com.jd.blockchain.ledger.TransactionPermission;
+import com.jd.blockchain.ledger.TransactionResponse;
+import com.jd.blockchain.ledger.TransactionTemplate;
 import org.junit.Test;
 
 /**
@@ -75,7 +80,7 @@ public class PermissionTest extends SDK_Base_Demo {
         System.out.println("pubKey="+newUser.getPubKey().toBase58());
         System.out.println("privKey="+newUser.getPrivKey().toBase58());
 
-//        txTemp.users().register(newUser.getIdentity());
+        txTemp.users().register(newUser.getIdentity());
 
         txTemp.security().authorziations().forUser(newUser.getIdentity()).
                 setPolicy(RolesPolicy.UNION).authorize("MANAGER0").
