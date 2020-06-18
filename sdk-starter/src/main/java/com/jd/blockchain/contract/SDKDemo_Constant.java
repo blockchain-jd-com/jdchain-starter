@@ -20,17 +20,17 @@ public class SDKDemo_Constant {
 //    public static String GW_PASSWORD = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
 
     //another server;
-//    public static String GW_IPADDR = "jdchain-cloud5-8080.jdfmgt.com";
-//    public static int GW_PORT = 80;
-//    public static String GW_PUB_KEY = "3snPdw7i7Pmvtzpg7ZJtMCn4iMrxv2iQnuQNjfPUmxmiJB8tHJTJQf";
-//    public static String GW_PRIV_KEY = "177gjxHMo9B71zrhrjb26RbNqcQdKcmVNqzbCTy1MyL9UvEM3vzJcwYmjjrxMhQQ6AyyR4R";
-//    public static String GW_PASSWORD = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
-
-    public static String GW_IPADDR = "jdchain2-18081.jd.com";
+    public static String GW_IPADDR = "jdchain-cloud5-8000.jdfmgt.com";
     public static int GW_PORT = 80;
-    public static String GW_PUB_KEY = "3snPdw7i7PXVXYjsBDQAjyExMjVLEVNYViK8fkTfexjqbxqsWgZVGX";
-    public static String GW_PRIV_KEY = "177gjufK1ZNFncmgdCwGYs6cnyeu8HoG6wsc2XKesGEGxfTrPYqYWi2GfRE55SAxvtY4KbJ";
-    public static String GW_PASSWORD = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
+    public static String GW_PUB_KEY = "3snPdw7i7Pmvtzpg7ZJtMCn4iMrxv2iQnuQNjfPUmxmiJB8tHJTJQf";
+    public static String GW_PRIV_KEY = "177gjxHMo9B71zrhrjb26RbNqcQdKcmVNqzbCTy1MyL9UvEM3vzJcwYmjjrxMhQQ6AyyR4R";
+    public static String GW_PASSWORD = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
+
+//    public static String GW_IPADDR = "jdchain2-18081.jd.com";
+//    public static int GW_PORT = 80;
+//    public static String GW_PUB_KEY = "3snPdw7i7PXVXYjsBDQAjyExMjVLEVNYViK8fkTfexjqbxqsWgZVGX";
+//    public static String GW_PRIV_KEY = "177gjufK1ZNFncmgdCwGYs6cnyeu8HoG6wsc2XKesGEGxfTrPYqYWi2GfRE55SAxvtY4KbJ";
+//    public static String GW_PASSWORD = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
 
     public static PrivKey gwPrivkey0 = KeyGenUtils.decodePrivKey(GW_PRIV_KEY, GW_PASSWORD);
     public static PubKey gwPubKey0 = KeyGenUtils.decodePubKey(GW_PUB_KEY);
