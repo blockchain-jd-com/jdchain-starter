@@ -701,4 +701,9 @@ public class SDKTest extends SDK_Base_Demo {
         LedgerTransaction ledgerTransactin = blockchainService.getTransactionByContentHash(ledgerHash,contentHash);
         System.out.println(ledgerTransactin.toString());
     }
+
+    @Test
+    public void getUserTotalCount(){
+        blockchainService.getUserTotalCount(ledgerHash);
+    }
 }

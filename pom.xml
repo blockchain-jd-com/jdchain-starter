@@ -15,7 +15,7 @@
 
     <properties>
         <!--<contract.version>1.0.1.RELEASE</contract.version>-->
-        <ledger.version>1.1.5.RELEASE</ledger.version>
+        <ledger.version>1.1.6.RELEASE</ledger.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <log4j.version>2.11.1</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
@@ -28,7 +28,23 @@
         <dependencies>
             <dependency>
                 <groupId>com.jd.blockchain</groupId>
-                <artifactId>sdk-pack</artifactId>
+                <artifactId>sdk-client</artifactId>
+                <version>${ledger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jd.blockchain</groupId>
+                <artifactId>contract-starter</artifactId>
+                <version>${ledger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jd.blockchain</groupId>
+                <artifactId>crypto-classic</artifactId>
+                <version>${ledger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jd.blockchain</groupId>
+                <artifactId>crypto-sm</artifactId>
                 <version>${ledger.version}</version>
             </dependency>
             <dependency>

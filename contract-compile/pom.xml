@@ -19,7 +19,18 @@
     <dependencies>
         <dependency>
             <groupId>com.jd.blockchain</groupId>
-            <artifactId>sdk-pack</artifactId>
+            <artifactId>sdk-client</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>crypto-classic</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>crypto-sm</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
