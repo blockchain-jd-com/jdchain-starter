@@ -308,14 +308,6 @@ public class SDKTest extends SDK_Base_Demo {
         return result.get();
     }
 
-    /**
-     * 生成一个区块链用户，并注册到区块链；
-     */
-    @Test
-    public void registerUserTest() {
-        this.registerUser();
-    }
-
     @Test
     public void rigisterUserMore() {
         for (int i = 0; i < 15; i++) {
@@ -705,5 +697,13 @@ public class SDKTest extends SDK_Base_Demo {
     @Test
     public void getUserTotalCount(){
         blockchainService.getUserTotalCount(ledgerHash);
+    }
+
+    /**
+     * 生成一个区块链用户，并注册到区块链；
+     */
+    @Test
+    public void registerUserTest() {
+        this.registerUser();
     }
 }
