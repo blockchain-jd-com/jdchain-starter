@@ -22,7 +22,23 @@
 
         <dependency>
             <groupId>com.jd.blockchain</groupId>
-            <artifactId>sdk-pack</artifactId>
+            <artifactId>sdk-client</artifactId>
+            <version>${ledger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>contract-starter</artifactId>
+            <version>${ledger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>crypto-classic</artifactId>
+            <version>${ledger.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.blockchain</groupId>
+            <artifactId>crypto-sm</artifactId>
             <version>${ledger.version}</version>
         </dependency>
 
