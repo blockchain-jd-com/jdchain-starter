@@ -341,14 +341,6 @@ public class SDKTest extends SDK_Base_Demo {
         return result.get();
     }
 
-    /**
-     * 生成一个区块链用户，并注册到区块链；
-     */
-    @Test
-    public void registerUserTest() {
-        this.registerUser();
-    }
-
     @Test
     public void rigisterUserMore() {
         for (int i = 0; i < 15; i++) {
@@ -755,7 +747,15 @@ public class SDKTest extends SDK_Base_Demo {
 //                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
 //    }
 
-    //5.使用相同的用户注册;
+    /**
+     * 生成一个区块链用户，并注册到区块链；
+     */
+    @Test
+    public void registerUserTest() {
+        this.registerUser();
+    }
+
+    //使用已有公私钥信息注册;
     @Test
     public void test_registerUser1() {
         PrivKey privKey = KeyGenUtils.decodePrivKey("177gjskNxyjGaFVWHfVVngVGHzLf7YrHSBrw8hNRaqQSNoApR1sC1rjE92uM73NVrbLhRwK",
