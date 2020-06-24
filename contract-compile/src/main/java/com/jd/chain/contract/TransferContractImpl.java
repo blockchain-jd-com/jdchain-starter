@@ -149,11 +149,11 @@ public class TransferContractImpl implements EventProcessingAware, TransferContr
     }
 
     @Override
-    public String getTxSigners() {
+    public String getTxSigners(String input) {
         Set<BlockchainIdentity> blockchainIdentitySet = eventContext.getTxSigners();
         StringBuffer stringBuffer = new StringBuffer(200);
         blockchainIdentitySet.forEach(obj -> stringBuffer.append(obj.getAddress()).append("###"));
-        return "txSigners="+stringBuffer.toString();
+        return "txSigners="+stringBuffer.toString()+",input="+input;
     }
 
     @Override
@@ -171,7 +171,7 @@ public class TransferContractImpl implements EventProcessingAware, TransferContr
     }
 
     @Override
-    public String test(){
-        return "123";
+    public String test(String input){
+        return input;
     }
 }

@@ -694,7 +694,7 @@ public class SDKTest extends SDK_Base_Demo {
     @Test
     public void deployContract4More_no_version(){
         ContractParams contractParams = new ContractParams();
-        contractParams.setContractZipName("contract-compile-1.0.9.RELEASE.car").setDeploy(true).setExecute(false);
+        contractParams.setContractZipName("contract-compile-1.2.1.RELEASE.car").setDeploy(true).setExecute(false);
         BlockchainIdentity contractAddress =
                 this.contractHandle(contractParams);
         contractParams.setContractIdentity(contractAddress);
@@ -778,7 +778,7 @@ public class SDKTest extends SDK_Base_Demo {
      */
     @Test
     public void executeContract1(){
-        Bytes contractAddress = Bytes.fromBase58("LdeP1bj6p2dkBbeBU8zB3svKmugQ2XWgN2xmx");
+        Bytes contractAddress = Bytes.fromBase58("LdeNoKnF58pJC5FcRmB7ac3Rpq4QjhZMAET5n");
         // 注册一个数据账户
         BlockchainIdentity dataAccount = createDataAccount();
         String key = "jd_zhangsan";
@@ -788,7 +788,7 @@ public class SDKTest extends SDK_Base_Demo {
         // 打印数据账户地址
         System.out.printf("DataAccountAddress = %s \r\n", dataAddress);
         System.out.println("return value = "+create1(contractAddress, dataAddress, key, value));
-
         System.out.println(getTxSigners(contractAddress));
+        System.out.println(execTest(contractAddress));
     }
 }

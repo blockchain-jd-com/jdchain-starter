@@ -232,7 +232,17 @@ public abstract class SDK_Base_Demo {
         TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
         // 使用合约创建
         TransferContract guanghu = txTpl.contract(contractAddress, TransferContract.class);
-        GenericValueHolder<String> result = decode(guanghu.getTxSigners());
+        GenericValueHolder<String> result = decode(guanghu.getTxSigners("test1"));
+        commit(txTpl,useCommitA);
+        return result.get();
+    }
+
+    public String execTest(Bytes contractAddress) {
+        System.out.println(String.format("params,Bytes contractAddress=%s",contractAddress.toBase58()));
+        TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
+        // 使用合约创建
+        TransferContract guanghu = txTpl.contract(contractAddress, TransferContract.class);
+        GenericValueHolder<String> result = decode(guanghu.test("test123"));
         commit(txTpl,useCommitA);
         return result.get();
     }
