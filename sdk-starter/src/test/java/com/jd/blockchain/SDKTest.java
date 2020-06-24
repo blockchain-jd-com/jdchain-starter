@@ -5,8 +5,38 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jd.blockchain.contract.ContractParams;
 import com.jd.blockchain.contract.SDK_Base_Demo;
-import com.jd.blockchain.crypto.*;
-import com.jd.blockchain.ledger.*;
+import com.jd.blockchain.crypto.AsymmetricKeypair;
+import com.jd.blockchain.crypto.Crypto;
+import com.jd.blockchain.crypto.HashDigest;
+import com.jd.blockchain.crypto.KeyGenUtils;
+import com.jd.blockchain.crypto.PrivKey;
+import com.jd.blockchain.crypto.PubKey;
+import com.jd.blockchain.ledger.BlockchainIdentity;
+import com.jd.blockchain.ledger.BlockchainIdentityData;
+import com.jd.blockchain.ledger.BlockchainKeyGenerator;
+import com.jd.blockchain.ledger.BlockchainKeypair;
+import com.jd.blockchain.ledger.BytesValue;
+import com.jd.blockchain.ledger.BytesValueList;
+import com.jd.blockchain.ledger.ContractCodeDeployOperation;
+import com.jd.blockchain.ledger.ContractEventSendOperation;
+import com.jd.blockchain.ledger.DataAccountKVSetOperation;
+import com.jd.blockchain.ledger.DataAccountRegisterOperation;
+import com.jd.blockchain.ledger.DataType;
+import com.jd.blockchain.ledger.LedgerBlock;
+import com.jd.blockchain.ledger.LedgerInitOperation;
+import com.jd.blockchain.ledger.LedgerInitSetting;
+import com.jd.blockchain.ledger.LedgerPermission;
+import com.jd.blockchain.ledger.LedgerTransaction;
+import com.jd.blockchain.ledger.Operation;
+import com.jd.blockchain.ledger.ParticipantNode;
+import com.jd.blockchain.ledger.PreparedTransaction;
+import com.jd.blockchain.ledger.TransactionContent;
+import com.jd.blockchain.ledger.TransactionPermission;
+import com.jd.blockchain.ledger.TransactionResponse;
+import com.jd.blockchain.ledger.TransactionTemplate;
+import com.jd.blockchain.ledger.TypedKVEntry;
+import com.jd.blockchain.ledger.TypedValue;
+import com.jd.blockchain.ledger.UserRegisterOperation;
 import com.jd.blockchain.sdk.converters.ClientResolveUtil;
 import com.jd.blockchain.transaction.GenericValueHolder;
 import com.jd.blockchain.utils.Bytes;
@@ -309,14 +339,6 @@ public class SDKTest extends SDK_Base_Demo {
         GenericValueHolder<String> result = decode(guanghu.putvalBifurcation(address, account, content, isHalf));
         commitA(txTpl);
         return result.get();
-    }
-
-    /**
-     * 生成一个区块链用户，并注册到区块链；
-     */
-    @Test
-    public void registerUserTest() {
-        this.registerUser();
     }
 
     @Test
@@ -669,35 +691,6 @@ public class SDKTest extends SDK_Base_Demo {
                 kvData[0].getKey(),kvData[0].getValue().toString(),kvData[0].getVersion()));
     }
 
-    //5.使用相同的用户注册;
-    @Test
-    public void test_registerUser1() {
-        PrivKey privKey = KeyGenUtils.decodePrivKey("177gjskNxyjGaFVWHfVVngVGHzLf7YrHSBrw8hNRaqQSNoApR1sC1rjE92uM73NVrbLhRwK",
-                "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY");
-        PubKey pubKey = KeyGenUtils.decodePubKey("3snPdw7i7Phr1e5PPn61Z5VVLdy4PmMo6RnTpBSEmM5EZiUEFDcEja");
-        BlockchainKeypair newUser = new BlockchainKeypair(pubKey, privKey);
-        this.registerUser(null, newUser);
-    }
-
-    /**
-     * 验证通过：mvn clean deploy，发布合约后，再执行合约;
-     */
-    @Test
-    public void executeContract1(){
-        Bytes contractAddress = Bytes.fromBase58("LdeNetUByGkkrY2WmtHsbpa2hKYNPiJ6rV3oN");
-        // 注册一个数据账户
-        BlockchainIdentity dataAccount = createDataAccount();
-        String key = "jd_zhangsan";
-        String value = "{\"dest\":\"KA006\",\"id\":\"cc-fin08-01\",\"items\":\"FIN001|3030\",\"source\":\"FIN001\"}";
-        // 获取数据账户地址x
-        String dataAddress = dataAccount.getAddress().toBase58();
-        // 打印数据账户地址
-        System.out.printf("DataAccountAddress = %s \r\n", dataAddress);
-        System.out.println("return value = "+create1(contractAddress, dataAddress, key, value));
-
-        System.out.println(getTxSigners(contractAddress));
-    }
-
     @Test
     public void deployContract4More_no_version(){
         ContractParams contractParams = new ContractParams();
@@ -707,14 +700,6 @@ public class SDKTest extends SDK_Base_Demo {
         contractParams.setContractIdentity(contractAddress);
         this.contractHandle(contractParams);
         this.contractHandle(contractParams.setExecute(true));
-    }
-
-    @Test
-    public void insertDataBase(){
-        byte[] arr = new byte[1024];
-        new Random().nextBytes(arr);
-        String value = Base64.encodeBase64String(arr);
-        this.insertData(null,null,"key1",value,-1);
     }
 
 //    @Test
@@ -761,4 +746,49 @@ public class SDKTest extends SDK_Base_Demo {
 //        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
 //                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
 //    }
+
+    /**
+     * 生成一个区块链用户，并注册到区块链；
+     */
+    @Test
+    public void registerUserTest() {
+        this.registerUser();
+    }
+
+    //使用已有公私钥信息注册;
+    @Test
+    public void test_registerUser1() {
+        PrivKey privKey = KeyGenUtils.decodePrivKey("177gjskNxyjGaFVWHfVVngVGHzLf7YrHSBrw8hNRaqQSNoApR1sC1rjE92uM73NVrbLhRwK",
+                "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY");
+        PubKey pubKey = KeyGenUtils.decodePubKey("3snPdw7i7Phr1e5PPn61Z5VVLdy4PmMo6RnTpBSEmM5EZiUEFDcEja");
+        BlockchainKeypair newUser = new BlockchainKeypair(pubKey, privKey);
+        this.registerUser(null, newUser);
+    }
+
+    @Test
+    public void insertDataBase(){
+        byte[] arr = new byte[1024];
+        new Random().nextBytes(arr);
+        String value = Base64.encodeBase64String(arr);
+        this.insertData(null,null,"key1",value,-1);
+    }
+
+    /**
+     * 验证通过：mvn clean deploy，发布合约后，再执行合约;
+     */
+    @Test
+    public void executeContract1(){
+        Bytes contractAddress = Bytes.fromBase58("LdeP1bj6p2dkBbeBU8zB3svKmugQ2XWgN2xmx");
+        // 注册一个数据账户
+        BlockchainIdentity dataAccount = createDataAccount();
+        String key = "jd_zhangsan";
+        String value = "{\"dest\":\"KA006\",\"id\":\"cc-fin08-01\",\"items\":\"FIN001|3030\",\"source\":\"FIN001\"}";
+        // 获取数据账户地址x
+        String dataAddress = dataAccount.getAddress().toBase58();
+        // 打印数据账户地址
+        System.out.printf("DataAccountAddress = %s \r\n", dataAddress);
+        System.out.println("return value = "+create1(contractAddress, dataAddress, key, value));
+
+        System.out.println(getTxSigners(contractAddress));
+    }
 }
