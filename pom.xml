@@ -7,7 +7,7 @@
     <groupId>com.jd.blockchain</groupId>
     <artifactId>jdchain-starter</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.1.RELEASE</version>
+    <version>1.3.0.RELEASE</version>
     <modules>
         <module>contract-compile</module>
         <module>sdk-starter</module>
@@ -15,7 +15,7 @@
 
     <properties>
         <!--<contract.version>1.0.1.RELEASE</contract.version>-->
-        <ledger.version>1.2.1.RELEASE</ledger.version>
+        <ledger.version>1.3.0.RELEASE</ledger.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <log4j.version>2.11.1</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>

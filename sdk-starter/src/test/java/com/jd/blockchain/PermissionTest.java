@@ -6,12 +6,16 @@ import com.jd.blockchain.crypto.PrivKey;
 import com.jd.blockchain.crypto.PubKey;
 import com.jd.blockchain.ledger.*;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author zhaogw
  * date 2019/9/18 16:23
  */
 public class PermissionTest extends SDK_Base_Demo {
+    Logger logger = LoggerFactory.getLogger(PermissionTest.class);
+    BlockchainKeypair newUser;
     /**
      * 新增加一个角色
      */
@@ -47,6 +51,11 @@ public class PermissionTest extends SDK_Base_Demo {
                 .enable(LedgerPermission.REGISTER_DATA_ACCOUNT)
                 .enable(LedgerPermission.WRITE_DATA_ACCOUNT)
                 .enable(TransactionPermission.DIRECT_OPERATION);
+        txTemp.security().roles().configure("MANAGER4")
+                .enable(LedgerPermission.CONFIGURE_ROLES)
+                .enable(LedgerPermission.REGISTER_CONTRACT)
+                .enable(LedgerPermission.REGISTER_EVENT_ACCOUNT)
+                .enable(TransactionPermission.DIRECT_OPERATION);
 
         TransactionResponse txResp = commit(txTemp);
         System.out.println(txResp.isSuccess());
@@ -70,16 +79,39 @@ public class PermissionTest extends SDK_Base_Demo {
         PrivKey privKey = KeyGenUtils.decodePrivKey("177gjyztVu92xSMda4FkhHfS6CvisvJ4nC9mSVscVsvAWN649Epy6yZ1PYYTZ4vaG1ByWZA",
                 "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY");
         PubKey pubKey = KeyGenUtils.decodePubKey("3snPdw7i7PjXU3qkPdRNRch974TDGbqim2Dm1GbJDuUYqfjyYUEfSU");
-        BlockchainKeypair newUser = new BlockchainKeypair(pubKey, privKey);
+        newUser = new BlockchainKeypair(pubKey, privKey);
         System.out.println("user'id="+newUser.getAddress());
         System.out.println("pubKey="+newUser.getPubKey().toBase58());
         System.out.println("privKey="+newUser.getPrivKey().toBase58());
 
-//        txTemp.users().register(newUser.getIdentity());
+        txTemp.users().register(newUser.getIdentity());
 
         txTemp.security().authorziations().forUser(newUser.getIdentity()).
-                setPolicy(RolesPolicy.UNION).authorize("MANAGER0").
-                authorize("MANAGER1").unauthorize("MANAGER3");
+                setPolicy(RolesPolicy.UNION)
+                .authorize("MANAGER0")
+                .authorize("MANAGER1")
+                .authorize("MANAGER3")
+                .authorize("MANAGER4")
+                .unauthorize("MANAGER3")
+                .unauthorize("MANAGER4");
         commitA(txTemp,adminKey);
+    }
+
+    @Test
+    public void testAll(){
+        executeRoleConfig_moreRoles();
+        addPermission4ExistUser();
+    }
+
+    @Test
+    public void testAuthorization(){
+        PrivilegeSet privilegeSet = blockchainService.getRolePrivileges(ledgerHash,"MANAGER1");
+        logger.info(privilegeSet.toString());
+        PrivKey privKey = KeyGenUtils.decodePrivKey("177gjyztVu92xSMda4FkhHfS6CvisvJ4nC9mSVscVsvAWN649Epy6yZ1PYYTZ4vaG1ByWZA",
+                "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY");
+        PubKey pubKey = KeyGenUtils.decodePubKey("3snPdw7i7PjXU3qkPdRNRch974TDGbqim2Dm1GbJDuUYqfjyYUEfSU");
+        newUser = new BlockchainKeypair(pubKey, privKey);
+        UserPrivilegeSet userPrivilegeSet = blockchainService.getUserPrivileges(ledgerHash, newUser.getAddress().toBase58());
+        logger.info(userPrivilegeSet.toString());
     }
 }

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jdchain-starter</artifactId>
         <groupId>com.jd.blockchain</groupId>
-        <version>1.2.1.RELEASE</version>
+        <version>1.3.0.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>contract-compile</artifactId>
