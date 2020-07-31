@@ -52,10 +52,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import static com.jd.blockchain.contract.SDKDemo_Constant.readChainCodes;
 import static com.jd.blockchain.transaction.ContractReturnValue.decode;
@@ -534,6 +534,7 @@ public class SDKTest extends SDK_Base_Demo {
         this.strDataAccount = dataAccount.getAddress().toBase58();
         System.out.println("current dataAccount=" + dataAccount.getAddress());
         txTemp.dataAccount(dataAccount.getAddress()).setText(key, value, version);
+        txTemp.dataAccount(dataAccount.getAddress()).setTimestamp(UUID.randomUUID().toString(),System.currentTimeMillis(),-1);
 
         // TX 准备就绪
         commit(txTemp,signAdminKey,useCommitA);
@@ -780,7 +781,7 @@ public class SDKTest extends SDK_Base_Demo {
      */
     @Test
     public void executeContract1(){
-        Bytes contractAddress = Bytes.fromBase58("LdeNoKnF58pJC5FcRmB7ac3Rpq4QjhZMAET5n");
+        Bytes contractAddress = Bytes.fromBase58("LdeNutjBPkmkRpGEKoLxy73wmkfGCd5xsNgnH");
         // 注册一个数据账户
         BlockchainIdentity dataAccount = createDataAccount();
         String key = "jd_zhangsan";
