@@ -327,6 +327,7 @@ public class SDK_Code_Example {
         TransactionResponse transactionResponse = ptx.commit();
 
         String cotractExecResult = result.get();
+        System.out.println("cotractExecResult="+cotractExecResult);
 
         // TransactionResponse也提供了可供查询结果的接口
         OperationResult[] operationResults = transactionResponse.getOperationResults();
@@ -393,12 +394,12 @@ public class SDK_Code_Example {
                 }
 
                 // 关闭监听的两种方式：1
-//                eventContext.getHandle().cancel();
+                eventContext.getHandle().cancel();
             }
         });
 
         // 关闭监听的两种方式：2
-//        handler.cancel();
+        handler.cancel();
     }
 
     //事件监听-用户自定义事件;
@@ -427,11 +428,11 @@ public class SDK_Code_Example {
                 }
 
                 // 关闭监听的两种方式：1
-//                eventContext.getHandle().cancel();
+                eventContext.getHandle().cancel();
             }
         });
 
         // 关闭监听的两种方式：2
-//        handler.cancel();
+        handler.cancel();
     }
 }
