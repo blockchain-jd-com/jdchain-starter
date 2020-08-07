@@ -13,36 +13,13 @@ import java.io.InputStream;
 public class SDKDemo_Constant {
 
     //localhost
-//    public static  String GW_IPADDR = "localhost";
-//    public static  int GW_PORT = 11000;
-//    public static String GW_PUB_KEY[] = {"3snPdw7i7PjVKiTH2VnXZu5H8QmNaSXpnk4ei533jFpuifyjS5zzH9",
-//            "3snPdw7i7PajLB35tEau1kmixc6ZrjLXgxwKbkv5bHhP7nT5dhD9eX"};
-//    public static String GW_PRIV_KEY[] = {"177gjzHTznYdPgWqZrH43W3yp37onm74wYXT4v9FukpCHBrhRysBBZh7Pzdo5AMRyQGJD7x",
-//            "177gju9p5zrNdHJVEQnEEKF4ZjDDYmAXyfG84V5RPGVc5xFfmtwnHA7j51nyNLUFffzz5UT"};
-//    public static String GW_PASSWORD = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
-
-    //another server;
-//    public static String GW_IPADDR = "jdchain-cloud4-8080.jdfmgt.com";
-//    public static int GW_PORT = 80;
-//    public static String GW_PUB_KEY[] = {"3snPdw7i7Po4VYVWquEwKMTzMqycJ6DbGwFbmJkB3Vgx5UBoHLAFXz",
-//            "3snPdw7i7Pg2qC7GbaN2Ly85BpZsRbncZcJtpeDRrr7aeKNkbMnSxM"};
-//    public static String GW_PRIV_KEY[] = {"177gjuFSYF1CM4rZ5Mp2AXdKNyg47V5JiWiJPGNwEeZ1wLMHpEjgEyvn5cMGnEvqMSc8gdg",
-//            "177gjz2q2LkJiUj52hz1NkQSSEoSZwNZB5brLQRFMBTSYkA19QQhwsgj2VExmAbeNSEgZj9"};
-//    public static String GW_PASSWORD = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
-
-    public static String GW_IPADDR = "jdchain2-18081.jd.com";
-    public static int GW_PORT = 80;
-    public static String GW_PUB_KEY[] = {"3snPdw7i7PXVXYjsBDQAjyExMjVLEVNYViK8fkTfexjqbxqsWgZVGX",
-        "3snPdw7i7Pf8eJ1uycdAM6spw7XjbST7m39MZbD9qdL4QEzoBAwLKh"};
-    public static String GW_PRIV_KEY[] = {"177gjufK1ZNFncmgdCwGYs6cnyeu8HoG6wsc2XKesGEGxfTrPYqYWi2GfRE55SAxvtY4KbJ",
-            "177gjyFk3VDzfExR1a5NxHvSGqS9FJ2aNAaqMgNyTUrRguMA9jN6Bp3vasUB7wXr1cqcDdj"};
-    public static String GW_PASSWORD = "8EjkXVSTxMFjCvNNsTo8RBMDEVQmk7gYkW4SCDuvdsBG";
-
-    //use new user to link gw;
-//    public static String GW_PUB_KEY[] = {"3snPdw7i7PdktosF4iYd7dSeumq6hpLnwtrRCLQWkpdpntMxABvJdZ",
-//            "3snPdw7i7Pf8eJ1uycdAM6spw7XjbST7m39MZbD9qdL4QEzoBAwLKh"};
-//    public static String GW_PRIV_KEY[] = {"177gjzfkJHt8BMxDM44Zik1KKr9bpxQXyBdy7cS4wJqFGyrnyPhqApaKpYqcka3NMJJ1M5V",
-//            "177gjyFk3VDzfExR1a5NxHvSGqS9FJ2aNAaqMgNyTUrRguMA9jN6Bp3vasUB7wXr1cqcDdj"};
+    public static  String GW_IPADDR = "localhost";
+    public static  int GW_PORT = 11000;
+    public static String GW_PUB_KEY[] = {"3snPdw7i7PjVKiTH2VnXZu5H8QmNaSXpnk4ei533jFpuifyjS5zzH9",
+            "3snPdw7i7PajLB35tEau1kmixc6ZrjLXgxwKbkv5bHhP7nT5dhD9eX"};
+    public static String GW_PRIV_KEY[] = {"177gjzHTznYdPgWqZrH43W3yp37onm74wYXT4v9FukpCHBrhRysBBZh7Pzdo5AMRyQGJD7x",
+            "177gju9p5zrNdHJVEQnEEKF4ZjDDYmAXyfG84V5RPGVc5xFfmtwnHA7j51nyNLUFffzz5UT"};
+    public static String GW_PASSWORD = "DYu3G8aGTMBW1WrTw76zxQJQU4DHLw9MLyy7peG4LKkY";
 
     public static PrivKey gwPrivkey0 = KeyGenUtils.decodePrivKey(GW_PRIV_KEY[0], GW_PASSWORD);
     public static PubKey gwPubKey0 = KeyGenUtils.decodePubKey(GW_PUB_KEY[0]);
