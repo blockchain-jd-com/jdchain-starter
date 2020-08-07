@@ -368,7 +368,8 @@ public class SDK_Code_Example {
         String eventAccount = eventIdentity.getAddress().toBase58();
         txTemp.eventAccount(eventAccount).publish("event_name", "string", -1)
                 .publish("event_name", 2, 0)
-                .publish("event_name", "bytes".getBytes(), 1);
+                .publish("event_name", 0L, 1)
+                .publish("event_name", "明天你好", 2);
 
         // TX 准备就绪；
         PreparedTransaction prepTx = txTemp.prepare();
