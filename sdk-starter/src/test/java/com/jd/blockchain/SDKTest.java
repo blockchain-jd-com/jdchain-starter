@@ -756,6 +756,7 @@ public class SDKTest extends SDK_Base_Demo {
     @Test
     public void registerUserTest() {
         this.registerUser();
+        this.registerUser("SM2",null,null);
     }
 
     //使用已有公私钥信息注册;
