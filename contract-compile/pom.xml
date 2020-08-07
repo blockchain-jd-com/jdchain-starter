@@ -54,8 +54,8 @@
                     <deployment>
                         <!-- 线上网关的配置，必选项 -->
                         <gateway>
-                            <host>jdchain2-18081.jd.com</host>
-                            <port>80</port>
+                            <host>localhost</host>
+                            <port>8081</port>
                         </gateway>
 
 <!--                        <contractAddress>-->
