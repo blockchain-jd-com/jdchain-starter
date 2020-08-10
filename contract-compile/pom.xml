@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jdchain-starter</artifactId>
         <groupId>com.jd.blockchain</groupId>
-        <version>1.0.9.RELEASE</version>
+        <version>1.3.0.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>contract-compile</artifactId>
@@ -54,8 +54,8 @@
                     <deployment>
                         <!-- 线上网关的配置，必选项 -->
                         <gateway>
-                            <host>jdchain2-18081.jd.com</host>
-                            <port>80</port>
+                            <host>localhost</host>
+                            <port>8081</port>
                         </gateway>
 
 <!--                        <contractAddress>-->

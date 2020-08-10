@@ -3,9 +3,41 @@ package com.jd.blockchain;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jd.blockchain.contract.ContractParams;
 import com.jd.blockchain.contract.SDK_Base_Demo;
-import com.jd.blockchain.crypto.*;
-import com.jd.blockchain.ledger.*;
+import com.jd.blockchain.crypto.AsymmetricKeypair;
+import com.jd.blockchain.crypto.Crypto;
+import com.jd.blockchain.crypto.HashDigest;
+import com.jd.blockchain.crypto.KeyGenUtils;
+import com.jd.blockchain.crypto.PrivKey;
+import com.jd.blockchain.crypto.PubKey;
+import com.jd.blockchain.ledger.BlockchainIdentity;
+import com.jd.blockchain.ledger.BlockchainIdentityData;
+import com.jd.blockchain.ledger.BlockchainKeyGenerator;
+import com.jd.blockchain.ledger.BlockchainKeypair;
+import com.jd.blockchain.ledger.BytesValue;
+import com.jd.blockchain.ledger.BytesValueList;
+import com.jd.blockchain.ledger.ContractCodeDeployOperation;
+import com.jd.blockchain.ledger.ContractEventSendOperation;
+import com.jd.blockchain.ledger.ContractInfo;
+import com.jd.blockchain.ledger.DataAccountKVSetOperation;
+import com.jd.blockchain.ledger.DataAccountRegisterOperation;
+import com.jd.blockchain.ledger.DataType;
+import com.jd.blockchain.ledger.LedgerBlock;
+import com.jd.blockchain.ledger.LedgerInitOperation;
+import com.jd.blockchain.ledger.LedgerInitSetting;
+import com.jd.blockchain.ledger.LedgerPermission;
+import com.jd.blockchain.ledger.LedgerTransaction;
+import com.jd.blockchain.ledger.Operation;
+import com.jd.blockchain.ledger.ParticipantNode;
+import com.jd.blockchain.ledger.PreparedTransaction;
+import com.jd.blockchain.ledger.TransactionContent;
+import com.jd.blockchain.ledger.TransactionPermission;
+import com.jd.blockchain.ledger.TransactionResponse;
+import com.jd.blockchain.ledger.TransactionTemplate;
+import com.jd.blockchain.ledger.TypedKVEntry;
+import com.jd.blockchain.ledger.TypedValue;
+import com.jd.blockchain.ledger.UserRegisterOperation;
 import com.jd.blockchain.sdk.converters.ClientResolveUtil;
 import com.jd.blockchain.transaction.GenericValueHolder;
 import com.jd.blockchain.utils.Bytes;
@@ -13,6 +45,7 @@ import com.jd.blockchain.utils.codec.Base58Utils;
 import com.jd.blockchain.utils.io.ByteArray;
 import com.jd.blockchain.utils.security.ShaUtils;
 import com.jd.chain.contract.TransferContract;
+import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,6 +54,8 @@ import org.junit.Test;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 import static com.jd.blockchain.contract.SDKDemo_Constant.readChainCodes;
 import static com.jd.blockchain.transaction.ContractReturnValue.decode;
@@ -308,14 +343,6 @@ public class SDKTest extends SDK_Base_Demo {
         return result.get();
     }
 
-    /**
-     * 生成一个区块链用户，并注册到区块链；
-     */
-    @Test
-    public void registerUserTest() {
-        this.registerUser();
-    }
-
     @Test
     public void rigisterUserMore() {
         for (int i = 0; i < 15; i++) {
@@ -507,6 +534,7 @@ public class SDKTest extends SDK_Base_Demo {
         this.strDataAccount = dataAccount.getAddress().toBase58();
         System.out.println("current dataAccount=" + dataAccount.getAddress());
         txTemp.dataAccount(dataAccount.getAddress()).setText(key, value, version);
+        txTemp.dataAccount(dataAccount.getAddress()).setTimestamp(UUID.randomUUID().toString(),System.currentTimeMillis(),-1);
 
         // TX 准备就绪
         commit(txTemp,signAdminKey,useCommitA);
@@ -666,7 +694,72 @@ public class SDKTest extends SDK_Base_Demo {
                 kvData[0].getKey(),kvData[0].getValue().toString(),kvData[0].getVersion()));
     }
 
-    //5.使用相同的用户注册;
+    @Test
+    public void deployContract4More_no_version(){
+        ContractParams contractParams = new ContractParams();
+        contractParams.setContractZipName("contract-compile-1.2.1.RELEASE.car").setDeploy(true).setExecute(false);
+        BlockchainIdentity contractAddress =
+                this.contractHandle(contractParams);
+        contractParams.setContractIdentity(contractAddress);
+        this.contractHandle(contractParams);
+        this.contractHandle(contractParams.setExecute(true));
+    }
+
+    @Test
+    public void deployContract4More_fill_version(){
+        ContractParams contractParams = new ContractParams().setContractZipName("contract-compile-1.3.0.RELEASE.car");
+        BlockchainKeypair datakeyPair = this.insertData(null,null);
+        contractParams.setDataAccount(datakeyPair.getIdentity()).setKey("moreVersions-key1").setValue("moreVersions-value1");
+        contractParams.setDeploy(true).setExecute(false);
+        BlockchainIdentity contractAddress =
+                this.contractHandle(contractParams);
+
+        contractParams.setContractIdentity(contractAddress);
+        this.contractHandle(contractParams);
+
+        contractParams.setHasVersion(true);
+        ContractInfo contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+        System.out.println("version="+contractInfo.getChainCodeVersion());
+        contractParams.setVersion(contractInfo.getChainCodeVersion());
+        this.contractHandle(contractParams);
+
+        //once again;
+        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+        System.out.println("version="+contractInfo.getChainCodeVersion());
+        contractParams.setVersion(contractInfo.getChainCodeVersion());
+        this.contractHandle(contractParams);
+
+        System.out.println("make exception;");
+        this.contractHandle(contractParams.setVersion(100L)); //error;
+
+        System.out.println("get version1;");
+        this.contractHandle(contractParams.setExecute(true).setHasVersion(false));
+        System.out.println("get version2;");
+        this.contractHandle(contractParams.setDeploy(true).setExecute(false).setHasVersion(false));
+        System.out.println("get version3;");
+        this.contractHandle(contractParams.setDeploy(false).setExecute(true).setHasVersion(false));
+        System.out.println("get version4;");
+        this.contractHandle(contractParams.setDeploy(true).setExecute(true).setHasVersion(false));
+
+        //repeat deploy;
+        contractInfo = this.blockchainService.getContract(ledgerHash,contractAddress.getAddress().toBase58());
+        System.out.println("is repeat?");
+        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
+                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
+        this.contractHandle(contractParams.setDeploy(true).setExecute(false).
+                setHasVersion(true).setVersion(contractInfo.getChainCodeVersion()));
+    }
+
+    /**
+     * 生成一个区块链用户，并注册到区块链；
+     */
+    @Test
+    public void registerUserTest() {
+        this.registerUser();
+        this.registerUser("SM2",null,null);
+    }
+
+    //使用已有公私钥信息注册;
     @Test
     public void test_registerUser1() {
         PrivKey privKey = KeyGenUtils.decodePrivKey("177gjskNxyjGaFVWHfVVngVGHzLf7YrHSBrw8hNRaqQSNoApR1sC1rjE92uM73NVrbLhRwK",
@@ -676,12 +769,20 @@ public class SDKTest extends SDK_Base_Demo {
         this.registerUser(null, newUser);
     }
 
+    @Test
+    public void insertDataBase(){
+        byte[] arr = new byte[1024];
+        new Random().nextBytes(arr);
+        String value = Base64.encodeBase64String(arr);
+        this.insertData(null,null,"key1",value,-1);
+    }
+
     /**
      * 验证通过：mvn clean deploy，发布合约后，再执行合约;
      */
     @Test
     public void executeContract1(){
-        Bytes contractAddress = Bytes.fromBase58("LdeNetUByGkkrY2WmtHsbpa2hKYNPiJ6rV3oN");
+        Bytes contractAddress = Bytes.fromBase58("LdeNutjBPkmkRpGEKoLxy73wmkfGCd5xsNgnH");
         // 注册一个数据账户
         BlockchainIdentity dataAccount = createDataAccount();
         String key = "jd_zhangsan";
@@ -691,7 +792,7 @@ public class SDKTest extends SDK_Base_Demo {
         // 打印数据账户地址
         System.out.printf("DataAccountAddress = %s \r\n", dataAddress);
         System.out.println("return value = "+create1(contractAddress, dataAddress, key, value));
-
         System.out.println(getTxSigners(contractAddress));
+        System.out.println(execTest(contractAddress));
     }
 }

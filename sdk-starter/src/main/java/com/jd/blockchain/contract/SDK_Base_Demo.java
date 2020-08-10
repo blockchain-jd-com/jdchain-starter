@@ -10,6 +10,8 @@ import com.jd.blockchain.transaction.SignatureUtils;
 import com.jd.blockchain.utils.Bytes;
 import com.jd.chain.contract.TransferContract;
 
+import java.util.Map;
+
 import static com.jd.blockchain.contract.SDKDemo_Constant.readChainCodes;
 import static com.jd.blockchain.transaction.ContractReturnValue.decode;
 
@@ -175,20 +177,28 @@ public abstract class SDK_Base_Demo {
      * 生成一个区块链用户，并注册到区块链；
      */
     public BlockchainKeypair registerUser() {
-        return this.registerUser(null,null);
+        return this.registerUser(null,null,null);
     }
 
-    public BlockchainKeypair registerUser(BlockchainKeypair signAdminKey, BlockchainKeypair userKeypair) {
+    public BlockchainKeypair registerUser(String cryptoType, BlockchainKeypair signAdminKey, BlockchainKeypair userKeypair) {
         // 在本地定义注册账号的 TX；
         TransactionTemplate txTemp = blockchainService.newTransaction(ledgerHash);
         if(userKeypair == null){
-            userKeypair = BlockchainKeyGenerator.getInstance().generate();
+            if("SM2".equals(cryptoType)){
+                userKeypair = BlockchainKeyGenerator.getInstance().generate(cryptoType);
+            }else {
+                userKeypair = BlockchainKeyGenerator.getInstance().generate();
+            }
         }
         System.out.println("user'address="+userKeypair.getAddress());
         txTemp.users().register(userKeypair.getIdentity());
         // TX 准备就绪；
         commit(txTemp,signAdminKey,useCommitA);
         return userKeypair;
+    }
+
+    public BlockchainKeypair registerUser(BlockchainKeypair signAdminKey, BlockchainKeypair userKeypair) {
+        return registerUser(null,signAdminKey,userKeypair);
     }
 
     /**
@@ -230,7 +240,17 @@ public abstract class SDK_Base_Demo {
         TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
         // 使用合约创建
         TransferContract guanghu = txTpl.contract(contractAddress, TransferContract.class);
-        GenericValueHolder<String> result = decode(guanghu.getTxSigners());
+        GenericValueHolder<String> result = decode(guanghu.getTxSigners("test1"));
+        commit(txTpl,useCommitA);
+        return result.get();
+    }
+
+    public String execTest(Bytes contractAddress) {
+        System.out.println(String.format("params,Bytes contractAddress=%s",contractAddress.toBase58()));
+        TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
+        // 使用合约创建
+        TransferContract guanghu = txTpl.contract(contractAddress, TransferContract.class);
+        GenericValueHolder<String> result = decode(guanghu.test("test123"));
         commit(txTpl,useCommitA);
         return result.get();
     }
@@ -281,5 +301,56 @@ public abstract class SDK_Base_Demo {
             System.out.println("return value = "+create1(contractAddress, dataAddress, key, value));
         }
         return contractDeployIdentity;
+    }
+
+    public BlockchainIdentity contractHandle(ContractParams contractParams) {
+        if(contractParams.getContractZipName() == null){
+            contractParams.setContractZipName("contract-JDChain-Contract.jar");
+        }
+        // 发布jar包
+        // 定义交易模板
+        TransactionTemplate txTpl = blockchainService.newTransaction(ledgerHash);
+        Bytes contractAddress = null;
+        if(contractParams.getContractIdentity() != null){
+            contractAddress = contractParams.getContractIdentity().getAddress();
+        }
+
+        if(contractParams.isDeploy){
+            // 将jar包转换为二进制数据
+            byte[] contractCode = readChainCodes(contractParams.getContractZipName());
+
+            // 生成一个合约账号
+            if(contractParams.getContractIdentity() == null){
+                contractParams.setContractIdentity(BlockchainKeyGenerator.getInstance().generate().getIdentity());
+            }
+            contractAddress = contractParams.getContractIdentity().getAddress();
+            System.out.println("contract's address=" + contractAddress);
+
+            // 生成发布合约操作
+            if(contractParams.isHasVersion()){
+//                txTpl.contracts().deploy(contractParams.contractIdentity, contractCode, contractParams.version);
+            } else {
+                txTpl.contracts().deploy(contractParams.contractIdentity, contractCode);
+            }
+
+
+            // 生成预发布交易；
+            commit(txTpl,contractParams.getSignAdminKey(),useCommitA);
+        }
+
+        if(contractParams.isExecute){
+            // 注册一个数据账户
+            if(contractParams.dataAccount == null){
+                contractParams.dataAccount = createDataAccount();
+                contractParams.key = "jd_zhangsan";
+                contractParams.value = "{\"dest\":\"KA006\",\"id\":\"cc-fin08-01\",\"items\":\"FIN001|3030\",\"source\":\"FIN001\"}";
+            }
+            // 获取数据账户地址x
+            String dataAddress = contractParams.dataAccount.getAddress().toBase58();
+            // 打印数据账户地址
+            System.out.printf("DataAccountAddress = %s \r\n", dataAddress);
+            System.out.println("return value = "+create1(contractAddress, dataAddress, contractParams.key, contractParams.value));
+        }
+        return contractParams.contractIdentity;
     }
 }

@@ -80,7 +80,7 @@ public class SDK_GateWay_Participant_Test_ {
         NetworkAddress networkAddress = new NetworkAddress(GATEWAY_IPADDR, 20000);
 
         // 注册参与方
-        txTemp.participants().register("5.com", user.getIdentity(), networkAddress);
+//        txTemp.participants().register("5.com", user.getIdentity(), networkAddress);
 
         // TX 准备就绪；
         PreparedTransaction prepTx = txTemp.prepare();
@@ -115,7 +115,7 @@ public class SDK_GateWay_Participant_Test_ {
 
         NetworkAddress networkAddress = new NetworkAddress("127.0.0.1", 20000);
 
-        txTemp.states().update(user.getIdentity(),networkAddress, ParticipantNodeState.ACTIVED);
+//        txTemp.states().update(user.getIdentity(),networkAddress, ParticipantNodeState.CONSENSUS);
 
         // TX 准备就绪；
         PreparedTransaction prepTx = txTemp.prepare();

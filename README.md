@@ -6,9 +6,16 @@ The group mail: [jdchain-support@jd.com](jdchain-support@jd.com)
 如果您对快速上手应用有更好的建议，欢迎给我们发邮件。用户用得好才是真的好。  
 官网：[http://ledger.jd.com/](http://ledger.jd.com/)  
 
-master与最新的release分支保持一致。其它分支打tag。
+master与最新的release分支保持一致。其它分支打tag。  
+随着版本的增多，为了保持与JDChain同步，自修改说明-12（含）开始，starter版本号与JDChain版本号对齐。即：版本1.3.0.RELEASE基于JDChain1.3.0.RELEASE构建。
 
 #修改说明：
+
+## 12.版本1.3.0.RELEASE说明
+1）样例基于JDChain1.3.0.RELEASE版本构建;
+
+## 11.版本1.1.0.RELEASE说明
+1）样例基于JDChain1.1.5.RELEASE版本构建;
 
 ## 10.版本1.0.9.RELEASE说明
 1）样例基于JDChain1.2.0.RELEASE版本构建;

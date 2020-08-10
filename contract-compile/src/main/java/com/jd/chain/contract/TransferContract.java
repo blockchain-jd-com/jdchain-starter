@@ -25,8 +25,8 @@ public interface TransferContract {
     String putvalBifurcation(String address, String account, String content, String isHalf);
 
     @ContractEvent(name = "getTxSigners")
-    String getTxSigners();
+    String getTxSigners(String input);
 
     @ContractEvent(name = "test")
-    String test();
+    String test(String input);
 }
