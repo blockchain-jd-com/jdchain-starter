@@ -7,7 +7,7 @@
     <groupId>com.jd.blockchain</groupId>
     <artifactId>jdchain-starter</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.0.RELEASE</version>
+    <version>1.1.10.RELEASE</version>
     <modules>
         <module>contract-compile</module>
         <module>sdk-starter</module>
