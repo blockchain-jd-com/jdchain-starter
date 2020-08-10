@@ -177,20 +177,28 @@ public abstract class SDK_Base_Demo {
      * 生成一个区块链用户，并注册到区块链；
      */
     public BlockchainKeypair registerUser() {
-        return this.registerUser(null,null);
+        return this.registerUser(null,null,null);
     }
 
-    public BlockchainKeypair registerUser(BlockchainKeypair signAdminKey, BlockchainKeypair userKeypair) {
+    public BlockchainKeypair registerUser(String cryptoType, BlockchainKeypair signAdminKey, BlockchainKeypair userKeypair) {
         // 在本地定义注册账号的 TX；
         TransactionTemplate txTemp = blockchainService.newTransaction(ledgerHash);
         if(userKeypair == null){
-            userKeypair = BlockchainKeyGenerator.getInstance().generate();
+            if("SM2".equals(cryptoType)){
+                userKeypair = BlockchainKeyGenerator.getInstance().generate(cryptoType);
+            }else {
+                userKeypair = BlockchainKeyGenerator.getInstance().generate();
+            }
         }
         System.out.println("user'address="+userKeypair.getAddress());
         txTemp.users().register(userKeypair.getIdentity());
         // TX 准备就绪；
         commit(txTemp,signAdminKey,useCommitA);
         return userKeypair;
+    }
+
+    public BlockchainKeypair registerUser(BlockchainKeypair signAdminKey, BlockchainKeypair userKeypair) {
+        return registerUser(null,signAdminKey,userKeypair);
     }
 
     /**
